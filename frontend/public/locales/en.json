@@ -1,0 +1,18 @@
+{
+  "brand": "Humanova",
+  "nav": {
+    "home": "Home",
+    "opportunities": "Opportunities",
+    "support": "Accessibility Support",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "login": "Log in",
+    "register": "Sign up"
+  },
+  "hero": {
+    "title": "Where volunteering, training, and accessibility meet.",
+    "subtitle": "Humanova connects students, volunteers, charities, companies, and universities in one inclusive ecosystem.",
+    "ctaPrimary": "Explore opportunities",
+    "ctaSecondary": "Watch how it works"
+  }
+}

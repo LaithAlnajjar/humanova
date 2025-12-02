@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS variables for Humanova identity */
+:root {
+  --humanova-olive: #556b2f;
+  --humanova-olive-dark: #3b4b21;
+  --humanova-cream: #ead8b1;
+  --humanova-gold: #c2a878;
+  --humanova-bg-light: #f5f3eb;
+  --humanova-bg-dark: #1a1f14;
+}
+
+/* Dark mode body background */
+:root.dark {
+  --humanova-bg-current: var(--humanova-bg-dark);
+}
+
+body {
+  @apply font-inter antialiased;
+  background-color: var(--humanova-bg-light);
+  color: #111827;
+}
+
+/* When the html has .dark class applied via ThemeContext */
+html.dark body {
+  background-color: var(--humanova-bg-dark);
+  color: #f9fafb;
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.65), rgba(234, 216, 177, 0.3))
+      border-box;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* For dark mode glass effect */
+html.dark .glass-panel {
+  background: radial-gradient(circle at top left, rgba(58, 75, 33, 0.82), rgba(26, 31, 20, 0.9)) border-box;
+  border: 1px solid rgba(194, 168, 120, 0.5);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.65) inset;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* RTL helper if needed for Arabic */
+html[dir='rtl'] body {
+  font-family: 'Cairo', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Basic container helper */
+.container {
+  @apply mx-auto px-4 sm:px-6 lg:px-8;
+  max-width: 1200px;
+}
