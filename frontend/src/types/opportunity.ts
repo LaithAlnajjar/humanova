@@ -1,3 +1,5 @@
+import { InternshipType } from './student';
+
 export type OpportunityType = 'volunteering' | 'internship' | 'support';
 
 export interface Opportunity {
@@ -10,4 +12,6 @@ export interface Opportunity {
   timeCommitment: string;
   description: string;
   isRemote: boolean;
+  major?: 'CS' | 'SE' | 'AI' | 'CIS' | 'CY' | 'BIT';
+  internshipType?: InternshipType;
 }

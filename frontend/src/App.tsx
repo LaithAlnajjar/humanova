@@ -1,7 +1,8 @@
 import React from 'react';
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { MainLayout } from '@/components/layout/MainLayout';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { LandingPage } from '@/pages/Landing/LandingPage';
 import { LoginPage } from '@/pages/Auth/LoginPage';
 import { RegisterPage } from '@/pages/Auth/RegisterPage';
@@ -14,6 +15,9 @@ import { DisabledStudentDashboard } from '@/pages/Dashboard/DisabledStudentDashb
 import { OpportunitiesPage } from '@/pages/Opportunities/OpportunitiesPage';
 import { SupportPage } from '@/pages/Support/SupportPage';
 import { ProfilePage } from '@/pages/Profile/ProfilePage';
+import { TrackingPage } from '@/pages/Student/TrackingPage';
+import { StudentOpportunitiesPage } from '@/pages/Student/StudentOpportunitiesPage';
+import StudentProfilePage from '@/pages/Student/StudentProfilePage';
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -31,17 +35,19 @@ export const App: React.FC = () => {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
-        {/* Dashboard routes without Navbar and Footer */}
-        <Route path="/dashboard" element={<Navigate to="/dashboard/student" replace />} />
-        <Route path="/dashboard/student" element={<StudentDashboard />} />
-        <Route path="/dashboard/volunteer" element={<VolunteerDashboard />} />
-        <Route path="/dashboard/charity" element={<CharityDashboard />} />
-        <Route path="/dashboard/company" element={<CompanyDashboard />} />
-        <Route path="/dashboard/university" element={<UniversityDashboard />} />
-        <Route
-          path="/dashboard/disabled_student"
-          element={<DisabledStudentDashboard />}
-        />
+        {/* Dashboard routes with Sidebar */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<Navigate to="/dashboard/student" replace />} />
+          <Route path="student" element={<StudentDashboard />} />
+          <Route path="student/tracking" element={<TrackingPage />} />
+          <Route path="student/opportunities" element={<StudentOpportunitiesPage />} />
+          <Route path="student/profile" element={<StudentProfilePage />} />
+          <Route path="volunteer" element={<VolunteerDashboard />} />
+          <Route path="charity" element={<CharityDashboard />} />
+          <Route path="company" element={<CompanyDashboard />} />
+          <Route path="university" element={<UniversityDashboard />} />
+          <Route path="disabled_student" element={<DisabledStudentDashboard />} />
+        </Route>
 
         {/* Fallback */}
         <Route

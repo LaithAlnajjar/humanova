@@ -1,15 +1,19 @@
 import React from 'react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { OpportunitiesRecommendations } from '@/components/dashboard/OpportunitiesRecommendations';
 import { ImpactSummary } from '@/components/dashboard/ImpactSummary';
 
 export const DisabledStudentDashboard: React.FC = () => {
   return (
-    <DashboardLayout
-      title="Accessibility overview"
-      subtitle="See your support requests, assigned helpers, and tailored opportunities."
-    >
+    <>
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+          Accessibility Overview
+        </h1>
+        <p className="max-w-2xl text-sm text-slate-300 md:text-base">
+          See your support requests, assigned helpers, and tailored opportunities.
+        </p>
+      </header>
       <div className="space-y-5">
         <StatsCards
           items={[
@@ -47,6 +51,6 @@ export const DisabledStudentDashboard: React.FC = () => {
           />
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };

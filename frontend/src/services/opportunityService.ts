@@ -35,8 +35,36 @@ const MOCK_OPPORTUNITIES: Opportunity[] = [
     timeCommitment: 'Full-time · 3 months',
     description:
       'Join the engineering team to build and maintain APIs with Java and Spring Boot in a real product.',
-    isRemote: false
-  }
+    isRemote: false,
+    major: 'SE',
+    internshipType: 'On-site',
+  },
+    {
+    id: '4',
+    title: 'Frontend Internship (React)',
+    organization: 'Amazon',
+    type: 'internship',
+    location: 'Remote',
+    skills: ['React', 'TypeScript', 'HTML/CSS'],
+    timeCommitment: 'Full-time · 6 months',
+    description: 'Work on a customer-facing product using modern React and TypeScript.',
+    isRemote: true,
+    major: 'CS',
+    internshipType: 'Remote',
+  },
+  {
+    id: '5',
+    title: 'Data Science Internship',
+    organization: 'Microsoft',
+    type: 'internship',
+    location: 'Amman · Hybrid',
+    skills: ['Python', 'Pandas', 'SQL'],
+    timeCommitment: 'Part-time · 4 months',
+    description: 'Analyze user data to derive insights and inform product decisions.',
+    isRemote: false,
+    major: 'AI',
+    internshipType: 'Hybrid',
+  },
 ];
 
 export const fetchOpportunities = async (): Promise<Opportunity[]> => {

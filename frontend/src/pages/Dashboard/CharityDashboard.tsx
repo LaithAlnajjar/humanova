@@ -1,15 +1,19 @@
 import React from 'react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { OpportunitiesRecommendations } from '@/components/dashboard/OpportunitiesRecommendations';
 import { ImpactSummary } from '@/components/dashboard/ImpactSummary';
 
 export const CharityDashboard: React.FC = () => {
   return (
-    <DashboardLayout
-      title="Charity overview"
-      subtitle="Publish roles, track volunteers, and see your outreach impact across campuses."
-    >
+    <>
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+          Charity Overview
+        </h1>
+        <p className="max-w-2xl text-sm text-slate-300 md:text-base">
+          Publish roles, track volunteers, and see your outreach impact across campuses.
+        </p>
+      </header>
       <div className="space-y-5">
         <StatsCards
           items={[
@@ -47,6 +51,6 @@ export const CharityDashboard: React.FC = () => {
           />
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };

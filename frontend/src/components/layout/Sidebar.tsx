@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
-import { LogOut } from 'lucide-react';
+import { LogOut, Home, Briefcase, User, ClipboardList } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
 
@@ -10,77 +10,83 @@ interface SidebarProps {
 }
 
 const baseLink =
-  'flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors duration-200';
+  'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-200';
+
+const NavItem: React.FC<{ to: string; icon: React.ReactNode; label: string; end?: boolean }> = ({ to, icon, label, end }) => (
+  <NavLink
+    to={to}
+    end={end}
+    className={({ isActive }) =>
+      clsx(
+        baseLink,
+        isActive
+          ? 'bg-humanova-olive text-white dark:bg-humanova-gold dark:text-black'
+          : 'text-gray-600 hover:bg-humanova-cream/60 dark:text-gray-300 dark:hover:bg-humanova-oliveDark/70'
+      )
+    }
+  >
+    {icon}
+    <span>{label}</span>
+  </NavLink>
+);
+
+const StudentNav = () => (
+  <>
+    <NavItem to="/dashboard/student" icon={<Home size={18} />} label="Overview" end />
+    <NavItem to="/dashboard/student/opportunities" icon={<Briefcase size={18} />} label="Browse Internships" />
+    <NavItem to="/dashboard/student/profile" icon={<User size={18} />} label="My Profile" />
+    <NavItem to="/dashboard/student/tracking" icon={<ClipboardList size={18} />} label="Training Log" />
+  </>
+);
+
+const DefaultNav: React.FC<{role: UserRole}> = ({ role }) => (
+   <>
+    <NavItem to={`/dashboard/${role}`} icon={<Home size={18} />} label="Overview" end />
+    <NavItem to={`/dashboard/${role}/opportunities`} icon={<Briefcase size={18} />} label="Opportunities" />
+   </>
+);
+
 
 export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  
+  const renderNav = () => {
+    switch(role) {
+      case 'student':
+        return <StudentNav />;
+      // TODO: Add cases for other roles
+      default:
+        return <DefaultNav role={role} />;
+    }
+  };
+
   return (
-    <aside className="hidden w-56 flex-col border-r border-white/10 bg-white/60 p-3 text-xs text-gray-800 backdrop-blur-md dark:bg-black/50 dark:text-gray-100 md:flex">
-      <div className="mb-4">
-        <p className="text-[11px] uppercase tracking-wide text-gray-500 dark:text-gray-400">
-          Dashboard
-        </p>
+    <aside className="hidden w-64 flex-col border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900 md:flex">
+      {/* Header */}
+      <div className="mb-6">
         <p className="text-sm font-semibold text-humanova-olive dark:text-humanova-gold">
-          {role === 'disabled_student'
-            ? 'Accessibility'
-            : role.charAt(0).toUpperCase() + role.slice(1)}
+          {user?.name}
+        </p>
+        <p className="text-xs capitalize text-gray-500 dark:text-gray-400">
+          {role.replace('_', ' ')}
         </p>
       </div>
 
-      <nav className="flex-1 space-y-1">
-        <NavLink
-          to={`/dashboard/${role}`}
-          end
-          className={({ isActive }) =>
-            clsx(
-              baseLink,
-              isActive
-                ? 'bg-humanova-olive text-white dark:bg-humanova-gold dark:text-black'
-                : 'text-gray-700 hover:bg-humanova-cream/60 dark:text-gray-200 dark:hover:bg-humanova-oliveDark/70'
-            )
-          }
-        >
-          <span>Overview</span>
-        </NavLink>
-
-        <NavLink
-          to={`/dashboard/${role}/opportunities`}
-          className={({ isActive }) =>
-            clsx(
-              baseLink,
-              isActive
-                ? 'bg-humanova-olive text-white dark:bg-humanova-gold dark:text-black'
-                : 'text-gray-700 hover:bg-humanova-cream/60 dark:text-gray-200 dark:hover:bg-humanova-oliveDark/70'
-            )
-          }
-        >
-          <span>Opportunities</span>
-        </NavLink>
-
-        <NavLink
-          to={`/dashboard/${role}/activity`}
-          className={({ isActive }) =>
-            clsx(
-              baseLink,
-              isActive
-                ? 'bg-humanova-olive text-white dark:bg-humanova-gold dark:text-black'
-                : 'text-gray-700 hover:bg-humanova-cream/60 dark:text-gray-200 dark:hover:bg-humanova-oliveDark/70'
-            )
-          }
-        >
-          <span>Activity & impact</span>
-        </NavLink>
+      {/* Navigation */}
+      <nav className="flex-1 space-y-2">
+        {renderNav()}
       </nav>
 
-      <div className="mt-4">
+      {/* Footer */}
+      <div className="mt-6">
         <button
           onClick={logout}
           className={clsx(
             baseLink,
-            'w-full text-gray-700 hover:bg-red-100/60 dark:text-gray-200 dark:hover:bg-red-900/40'
+            'w-full text-gray-600 hover:bg-red-100/60 dark:text-gray-300 dark:hover:bg-red-900/40'
           )}
         >
-          <LogOut size={14} />
+          <LogOut size={18} />
           <span>Log out</span>
         </button>
       </div>

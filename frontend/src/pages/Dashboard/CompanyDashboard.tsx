@@ -1,15 +1,19 @@
 import React from 'react';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { StatsCards } from '@/components/dashboard/StatsCards';
 import { OpportunitiesRecommendations } from '@/components/dashboard/OpportunitiesRecommendations';
 import { ImpactSummary } from '@/components/dashboard/ImpactSummary';
 
 export const CompanyDashboard: React.FC = () => {
   return (
-    <DashboardLayout
-      title="Company overview"
-      subtitle="Manage internships, training programs, and track applicants from partner universities."
-    >
+    <>
+      <header className="space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
+          Company Overview
+        </h1>
+        <p className="max-w-2xl text-sm text-slate-300 md:text-base">
+          Manage internships, training programs, and track applicants from partner universities.
+        </p>
+      </header>
       <div className="space-y-5">
         <StatsCards
           items={[
@@ -47,6 +51,6 @@ export const CompanyDashboard: React.FC = () => {
           />
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 };
