@@ -1,25 +1,25 @@
-import React, { useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchOpportunities } from '@/services/opportunityService';
-import { Opportunity } from '@/types/opportunity';
+import React, { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchOpportunities } from "@/services/opportunityService";
+import { Opportunity } from "@/types/opportunity";
 import {
   OpportunityFilters,
-  OpportunityFilterState
-} from '@/components/opportunities/OpportunityFilters';
-import { OpportunityCard } from '@/components/opportunities/OpportunityCard';
-import { OpportunityModal } from '@/components/opportunities/OpportunityModal';
+  OpportunityFilterState,
+} from "@/components/opportunities/OpportunityFilters";
+import { OpportunityCard } from "@/components/opportunities/OpportunityCard";
+import { OpportunityModal } from "@/components/opportunities/OpportunityModal";
 
 export const StudentOpportunitiesPage: React.FC = () => {
   const { data, isLoading } = useQuery({
-    queryKey: ['opportunities'],
-    queryFn: fetchOpportunities
+    queryKey: ["opportunities"],
+    queryFn: fetchOpportunities,
   });
 
   const [filters, setFilters] = useState<OpportunityFilterState>({
-    type: 'all',
-    location: '',
-    search: '',
-    major: 'all',
+    type: "all",
+    location: "",
+    search: "",
+    major: "all",
     internshipTypes: [],
   });
 
@@ -29,8 +29,8 @@ export const StudentOpportunitiesPage: React.FC = () => {
     if (!data) return [];
     return data.filter((opp) => {
       // Category filter
-      if (filters.type !== 'all' && opp.type !== filters.type) return false;
-      
+      if (filters.type !== "all" && opp.type !== filters.type) return false;
+
       // Location filter
       if (
         filters.location &&
@@ -38,25 +38,25 @@ export const StudentOpportunitiesPage: React.FC = () => {
       ) {
         return false;
       }
-      
+
       // Search filter
       if (filters.search) {
         const haystack = `${opp.title} ${opp.organization} ${opp.skills.join(
-          ' '
+          " "
         )}`.toLowerCase();
         if (!haystack.includes(filters.search.toLowerCase())) return false;
       }
 
       // Major filter (assuming opp has a 'major' property or similar)
-      if (filters.major !== 'all' && opp.major !== filters.major) {
+      if (filters.major !== "all" && opp.major !== filters.major) {
         return false;
       }
 
       // Internship type filter
       if (
-        opp.type === 'internship' &&
+        opp.type === "internship" &&
         filters.internshipTypes.length > 0 &&
-        !filters.internshipTypes.includes(opp.internshipType)
+        !filters.internshipTypes.includes(opp.internshipType!)
       ) {
         return false;
       }
@@ -66,12 +66,12 @@ export const StudentOpportunitiesPage: React.FC = () => {
   }, [data, filters]);
 
   return (
-    <div className="container py-10">
-      <div className="mb-4">
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-50">
+    <div className="space-y-6 px-32">
+      <div>
+        <h1 className="text-2xl font-semibold text-gray-900 dark:text-gray-50">
           Browse Internships
         </h1>
-        <p className="text-xs text-gray-600 dark:text-gray-300">
+        <p className="text-sm text-gray-600 dark:text-gray-300">
           Filter internships curated by Humanova.
         </p>
       </div>
@@ -79,13 +79,15 @@ export const StudentOpportunitiesPage: React.FC = () => {
       <OpportunityFilters value={filters} onChange={setFilters} />
 
       {isLoading ? (
-        <p className="mt-4 text-xs text-gray-600 dark:text-gray-300">Loading…</p>
+        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
+          Loading…
+        </p>
       ) : filtered.length === 0 ? (
-        <p className="mt-4 text-xs text-gray-600 dark:text-gray-300">
+        <p className="mt-4 text-sm text-gray-600 dark:text-gray-300">
           No opportunities match your filters yet.
         </p>
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((opp) => (
             <OpportunityCard
               key={opp.id}
@@ -96,7 +98,10 @@ export const StudentOpportunitiesPage: React.FC = () => {
         </div>
       )}
 
-      <OpportunityModal opportunity={selected} onClose={() => setSelected(null)} />
+      <OpportunityModal
+        opportunity={selected}
+        onClose={() => setSelected(null)}
+      />
     </div>
   );
 };

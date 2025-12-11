@@ -25,11 +25,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
   };
 
   return (
-    <Card>
-      <h2 className="p-4 text-lg font-semibold border-b border-gray-200 dark:border-gray-700">
+    <Card className="rounded-3xl">
+      <h2 className="p-6 text-lg font-semibold border-b border-gray-200 dark:border-gray-700">
         Portfolio
       </h2>
-      <div className="space-y-4 p-4">
+      <div className="p-6 space-y-6">
         <Input
           name="githubUrl"
           label="GitHub URL"
@@ -47,18 +47,25 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({
           // icon={<Behance size={16} />} // Behance icon is not available in lucide-react
         />
 
-        <div className="flex items-center justify-between rounded-lg border border-dashed border-gray-300 p-3 dark:border-gray-600">
-          <p className="text-sm text-gray-700 dark:text-gray-200">
-            Curriculum Vitae (CV)
-          </p>
-          <Button variant="outline" size="sm">
-            <Upload size={14} className="mr-2" />
-            Upload CV
+        <div className="flex items-center justify-between rounded-xl border border-dashed border-gray-300 p-4 dark:border-gray-600">
+          <div>
+            <p className="font-semibold text-gray-700 dark:text-gray-200">
+              Curriculum Vitae (CV)
+            </p>
+            <p className="text-sm text-gray-500">
+              {portfolio.cvUrl ? "cv_document_2024.pdf" : "No CV uploaded"}
+            </p>
+          </div>
+          <Button variant="outline" className="w-32">
+            <Upload size={16} className="mr-2 " />
+            Upload
           </Button>
         </div>
-      </div>
-      <div className="border-t border-gray-200 p-4 dark:border-gray-700 flex justify-end">
-        <Button onClick={handleSave}>Save Portfolio</Button>
+        <div className="flex justify-end">
+          <Button className="w-32" onClick={handleSave}>
+            Save Portfolio
+          </Button>
+        </div>
       </div>
     </Card>
   );
