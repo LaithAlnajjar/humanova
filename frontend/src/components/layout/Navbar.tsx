@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { User, LogOut } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLang } from '@/context/LangContext';
+import { useAuth } from '@/context/AuthContext';
 
 const navLinkBase =
   'text-sm sm:text-base px-3 py-1 rounded-full transition-colors duration-300';
@@ -15,6 +17,9 @@ export const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { lang, toggleLang } = useLang();
+  const { isAuthenticated, user, logout } = useAuth();
+
+  const dashboardPath = user ? `/dashboard/${user.role}` : '/dashboard';
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/40 bg-gradient-to-b from-white/80 to-white/40 backdrop-blur-md dark:from-black/70 dark:to-black/30">
@@ -60,14 +65,6 @@ export const Navbar: React.FC = () => {
             >
               {t('nav.support')}
             </NavLink>
-            <NavLink
-              to="/dashboard"
-              className={({ isActive }) =>
-                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
-              }
-            >
-              {t('nav.dashboard')}
-            </NavLink>
           </div>
 
           {/* Lang + Theme toggles */}
@@ -91,20 +88,41 @@ export const Navbar: React.FC = () => {
             </button>
           </div>
 
-          {/* Auth buttons (placeholder) */}
+          {/* Auth section */}
           <div className="hidden items-center gap-2 sm:flex">
-            <Link
-              to="/auth/login"
-              className="text-xs font-medium text-gray-800 hover:text-humanova-olive dark:text-gray-100 dark:hover:text-humanova-gold"
-            >
-              {t('nav.login')}
-            </Link>
-            <Link
-              to="/auth/register"
-              className="rounded-full bg-humanova-olive px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-humanova-oliveDark dark:bg-humanova-gold dark:text-black dark:hover:bg-humanova-gold/90"
-            >
-              {t('nav.register')}
-            </Link>
+            {isAuthenticated && user ? (
+              <>
+                <Link
+                  to={dashboardPath}
+                  className="flex h-8 w-8 items-center justify-center rounded-full glass-panel text-gray-800 hover:text-humanova-olive dark:text-gray-100 dark:hover:text-humanova-gold"
+                  title="Go to dashboard"
+                >
+                  <User size={18} />
+                </Link>
+                <button
+                  onClick={logout}
+                  className="flex h-8 w-8 items-center justify-center rounded-full glass-panel text-gray-800 hover:text-red-600 dark:text-gray-100 dark:hover:text-red-500"
+                  title="Log out"
+                >
+                  <LogOut size={18} />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/auth/login"
+                  className="text-xs font-medium text-gray-800 hover:text-humanova-olive dark:text-gray-100 dark:hover:text-humanova-gold"
+                >
+                  {t('nav.login')}
+                </Link>
+                <Link
+                  to="/auth/register"
+                  className="rounded-full bg-humanova-olive px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-humanova-oliveDark dark:bg-humanova-gold dark:text-black dark:hover:bg-humanova-gold/90"
+                >
+                  {t('nav.register')}
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

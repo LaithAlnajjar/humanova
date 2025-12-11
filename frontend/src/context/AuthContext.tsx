@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type UserRole = 'student' | 'volunteer' | 'charity' | 'company' | 'university' | 'disabled_student';
 
@@ -19,15 +20,26 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    try {
+      const storedUser = localStorage.getItem('user');
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch (error) {
+      console.error("Failed to parse user from localStorage", error);
+      return null;
+    }
+  });
+  const navigate = useNavigate();
 
   const login = (nextUser: AuthUser) => {
     setUser(nextUser);
-    // ممكن لاحقاً نضيف تخزين في localStorage / JWT الخ...
+    localStorage.setItem('user', JSON.stringify(nextUser));
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('user');
+    navigate('/');
   };
 
   return (

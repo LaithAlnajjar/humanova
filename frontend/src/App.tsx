@@ -1,8 +1,7 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { MainLayout } from '@/components/layout/MainLayout';
 import { LandingPage } from '@/pages/Landing/LandingPage';
 import { LoginPage } from '@/pages/Auth/LoginPage';
 import { RegisterPage } from '@/pages/Auth/RegisterPage';
@@ -21,43 +20,35 @@ export const App: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-humanova-cream/60 to-transparent dark:from-black dark:to-humanova-oliveDark/40">
-      <Navbar />
-      <main className="flex-1">
-        <Routes>
+      <Routes>
+        {/* Public routes with Navbar and Footer */}
+        <Route element={<MainLayout />}>
           <Route path="/" element={<LandingPage />} />
-
-          {/* Auth */}
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
-
-          {/* Dashboards */}
-          <Route path="/dashboard" element={<Navigate to="/dashboard/student" replace />} />
-          <Route path="/dashboard/student" element={<StudentDashboard />} />
-          <Route path="/dashboard/volunteer" element={<VolunteerDashboard />} />
-          <Route path="/dashboard/charity" element={<CharityDashboard />} />
-          <Route path="/dashboard/company" element={<CompanyDashboard />} />
-          <Route path="/dashboard/university" element={<UniversityDashboard />} />
-          <Route
-            path="/dashboard/disabled_student"
-            element={<DisabledStudentDashboard />}
-          />
-
-          {/* Fallback */}
-          <Route
-            path="*"
-            element={<div className="container py-16">{t('nav.home')}</div>}
-          />
+          <Route path="/opportunities" element={<OpportunitiesPage />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+        </Route>
 
-          <Route
-          
-          path="/opportunities" 
-          element={<OpportunitiesPage />} />
+        {/* Dashboard routes without Navbar and Footer */}
+        <Route path="/dashboard" element={<Navigate to="/dashboard/student" replace />} />
+        <Route path="/dashboard/student" element={<StudentDashboard />} />
+        <Route path="/dashboard/volunteer" element={<VolunteerDashboard />} />
+        <Route path="/dashboard/charity" element={<CharityDashboard />} />
+        <Route path="/dashboard/company" element={<CompanyDashboard />} />
+        <Route path="/dashboard/university" element={<UniversityDashboard />} />
+        <Route
+          path="/dashboard/disabled_student"
+          element={<DisabledStudentDashboard />}
+        />
 
-        </Routes>
-      </main>
-      <Footer />
+        {/* Fallback */}
+        <Route
+          path="*"
+          element={<div className="container py-16">{t('nav.home')}</div>}
+        />
+      </Routes>
     </div>
   );
 };

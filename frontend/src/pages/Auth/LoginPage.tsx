@@ -6,7 +6,16 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { mockLogin } from '@/services/authService';
 import { useAuth } from '@/context/AuthContext';
-import { LoginPayload } from '@/types/auth';
+import { LoginPayload, UserRole } from '@/types/auth';
+
+const ALL_ROLES: UserRole[] = [
+  'student',
+  'volunteer',
+  'charity',
+  'company',
+  'university',
+  'disabled_student'
+];
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +32,32 @@ export const LoginPage: React.FC = () => {
         email: user.email,
         role: user.role
       });
-      navigate('/dashboard');
+
+      // Navigate to the correct dashboard based on the user's role.
+      switch (user.role) {
+        case 'student':
+          navigate('/dashboard/student');
+          break;
+        case 'volunteer':
+          navigate('/dashboard/volunteer');
+          break;
+        case 'charity':
+          navigate('/dashboard/charity');
+          break;
+        case 'company':
+          navigate('/dashboard/company');
+          break;
+        case 'university':
+          navigate('/dashboard/university');
+          break;
+        case 'disabled_student':
+          navigate('/dashboard/disabled_student');
+          break;
+        default:
+          // Fallback to a generic dashboard if the role is not recognized.
+          navigate('/dashboard');
+          break;
+      }
     }
   });
 
@@ -43,6 +77,17 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
     if (!validate()) return;
     mutation.mutate(form);
+  };
+  
+  const handleMockLogin = (role: UserRole) => {
+    const mockUser = {
+      id: `mock-${role}-${Date.now()}`,
+      name: `${role.charAt(0).toUpperCase() + role.slice(1)} User`,
+      email: `${role}@example.com`,
+      role: role
+    };
+    login(mockUser);
+    navigate(`/dashboard/${role}`);
   };
 
   return (
@@ -107,6 +152,25 @@ export const LoginPage: React.FC = () => {
             Create one
           </button>
         </p>
+        
+        {/* Mock login section */}
+        <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
+          <p className="text-center text-[10px] uppercase tracking-wider text-gray-500">
+            Debug / Mock Login
+          </p>
+          <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+            {ALL_ROLES.map((role) => (
+              <Button
+                key={role}
+                variant="outline"
+                size="sm"
+                onClick={() => handleMockLogin(role)}
+              >
+                {role.replace('_', ' ')}
+              </Button>
+            ))}
+          </div>
+        </div>
       </motion.div>
     </div>
   );

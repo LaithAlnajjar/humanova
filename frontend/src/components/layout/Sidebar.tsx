@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
+import { LogOut } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
 
 interface SidebarProps {
@@ -11,6 +13,7 @@ const baseLink =
   'flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium transition-colors duration-200';
 
 export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
+  const { logout } = useAuth();
   return (
     <aside className="hidden w-56 flex-col border-r border-white/10 bg-white/60 p-3 text-xs text-gray-800 backdrop-blur-md dark:bg-black/50 dark:text-gray-100 md:flex">
       <div className="mb-4">
@@ -24,7 +27,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
         </p>
       </div>
 
-      <nav className="space-y-1">
+      <nav className="flex-1 space-y-1">
         <NavLink
           to={`/dashboard/${role}`}
           end
@@ -68,6 +71,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
           <span>Activity & impact</span>
         </NavLink>
       </nav>
+
+      <div className="mt-4">
+        <button
+          onClick={logout}
+          className={clsx(
+            baseLink,
+            'w-full text-gray-700 hover:bg-red-100/60 dark:text-gray-200 dark:hover:bg-red-900/40'
+          )}
+        >
+          <LogOut size={14} />
+          <span>Log out</span>
+        </button>
+      </div>
     </aside>
   );
 };

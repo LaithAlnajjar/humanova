@@ -7,7 +7,8 @@
     "dashboard": "Dashboard",
     "profile": "Profile",
     "login": "Log in",
-    "register": "Sign up"
+    "register": "Sign up",
+    "logout": "Logout"
   },
   "hero": {
     "title": "Where volunteering, training, and accessibility meet.",
