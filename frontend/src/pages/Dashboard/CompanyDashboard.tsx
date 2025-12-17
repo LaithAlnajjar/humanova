@@ -1,56 +1,95 @@
-import React from 'react';
-import { StatsCards } from '@/components/dashboard/StatsCards';
-import { OpportunitiesRecommendations } from '@/components/dashboard/OpportunitiesRecommendations';
-import { ImpactSummary } from '@/components/dashboard/ImpactSummary';
+// src/pages/Dashboard/CompanyDashboard.tsx
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCompanyStats } from "../../services/companyService";
+import { StatsCards } from "../../components/dashboard/StatsCards";
+import { Card } from "../../components/ui/Card";
+import { Button } from "../../components/ui/Button";
+import { Link } from "react-router-dom";
+import { Briefcase, Users, UserPlus, CheckSquare } from "lucide-react";
 
-export const CompanyDashboard: React.FC = () => {
+const CompanyDashboard = () => {
+  const { data: stats, isLoading } = useQuery({
+    queryKey: ["companyStats"],
+    queryFn: getCompanyStats,
+  });
+
+  const summaryStats = [
+    {
+      title: "Finished Internships",
+      value: stats?.finishedInternships ?? 0,
+      icon: <CheckSquare />,
+    },
+    {
+      title: "Current Internships",
+      value: stats?.currentInternships ?? 0,
+      icon: <Briefcase />,
+    },
+    {
+      title: "Pending Applications",
+      value: stats?.pendingApplications ?? 0,
+      icon: <Users />,
+    },
+  ];
+
   return (
-    <>
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Company Overview
-        </h1>
-        <p className="max-w-2xl text-sm text-slate-300 md:text-base">
-          Manage internships, training programs, and track applicants from partner universities.
-        </p>
-      </header>
-      <div className="space-y-5">
+    <div className="space-y-6 p-4 md:p-8">
+      <h1 className="text-2xl font-semibold">Company Dashboard</h1>
+
+      {isLoading ? (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card className="h-24 animate-pulse"></Card>
+          <Card className="h-24 animate-pulse"></Card>
+          <Card className="h-24 animate-pulse"></Card>
+        </div>
+      ) : (
         <StatsCards
           items={[
-            { label: 'Open internships', value: 4, helper: 'Tech + operations' },
-            { label: 'Applicants this week', value: 23, helper: 'Across all roles' },
-            { label: 'Partner universities', value: 6, helper: 'Active pipelines' }
+            {
+              label: "Finished Internships",
+              value: stats?.finishedInternships ?? 0,
+              helper: "Completed programs",
+            },
+            {
+              label: "Current Internships",
+              value: stats?.currentInternships ?? 0,
+              helper: "Ongoing programs",
+            },
+            {
+              label: "Pending Applications",
+              value: stats?.pendingApplications ?? 0,
+              helper: "Awaiting review",
+            },
           ]}
         />
+      )}
 
-        <div className="grid gap-4 md:grid-cols-[2fr,1.2fr]">
-          <OpportunitiesRecommendations
-            items={[
-              {
-                id: 'co1',
-                title: 'Backend Java intern',
-                organization: 'Your company',
-                type: 'internship',
-                hours: 80
-              },
-              {
-                id: 'co2',
-                title: 'CSR volunteering day',
-                organization: 'Your company',
-                type: 'volunteering',
-                hours: 8
-              }
-            ]}
-          />
-
-          <ImpactSummary
-            points={760}
-            level="Talent partner"
-            completed={9}
-            upcoming={2}
-          />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <div className="p-6">
+            <h3 className="font-semibold text-lg">In-App Chat (Mock)</h3>
+            <p className="text-sm text-gray-400 mt-2">
+              Contact students and supervisors directly.
+            </p>
+            <Button className="mt-4" variant="ghost">
+              Open Messenger
+            </Button>
+          </div>
+        </Card>
+        <Card>
+          <div className="p-6">
+            <h3 className="font-semibold text-lg">Rate a Student (Mock)</h3>
+            <p className="text-sm text-gray-400 mt-2">
+              Provide feedback for completed internships.
+            </p>
+            <Button className="mt-4" variant="ghost">
+              Evaluate
+            </Button>
+          </div>
+        </Card>
       </div>
-    </>
+    </div>
   );
 };
+
+export default CompanyDashboard;

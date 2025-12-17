@@ -9,7 +9,7 @@ import { RegisterPage } from '@/pages/Auth/RegisterPage';
 import { StudentDashboard } from '@/pages/Dashboard/StudentDashboard';
 import { VolunteerDashboard } from '@/pages/Dashboard/VolunteerDashboard';
 import { CharityDashboard } from '@/pages/Dashboard/CharityDashboard';
-import { CompanyDashboard } from '@/pages/Dashboard/CompanyDashboard';
+import CompanyDashboard from '@/pages/Dashboard/CompanyDashboard';
 import { UniversityDashboard } from '@/pages/Dashboard/UniversityDashboard';
 import { DisabledStudentDashboard } from '@/pages/Dashboard/DisabledStudentDashboard';
 import { OpportunitiesPage } from '@/pages/Opportunities/OpportunitiesPage';
@@ -18,6 +18,9 @@ import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { TrackingPage } from '@/pages/Student/TrackingPage';
 import { StudentOpportunitiesPage } from '@/pages/Student/StudentOpportunitiesPage';
 import StudentProfilePage from '@/pages/Student/StudentProfilePage';
+import PostInternshipPage from './pages/Company/PostInternshipPage';
+import ApplicationManagerPage from './pages/Company/ApplicationManagerPage';
+import SupervisorManagerPage from './pages/Company/SupervisorManagerPage';
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -45,6 +48,9 @@ export const App: React.FC = () => {
           <Route path="volunteer" element={<VolunteerDashboard />} />
           <Route path="charity" element={<CharityDashboard />} />
           <Route path="company" element={<CompanyDashboard />} />
+          <Route path="company/post" element={<PostInternshipPage />} />
+          <Route path="company/applications" element={<ApplicationManagerPage />} />
+          <Route path="company/supervisors" element={<SupervisorManagerPage />} />
           <Route path="university" element={<UniversityDashboard />} />
           <Route path="disabled_student" element={<DisabledStudentDashboard />} />
         </Route>
