@@ -21,6 +21,10 @@ import StudentProfilePage from '@/pages/Student/StudentProfilePage';
 import PostInternshipPage from './pages/Company/PostInternshipPage';
 import ApplicationManagerPage from './pages/Company/ApplicationManagerPage';
 import SupervisorManagerPage from './pages/Company/SupervisorManagerPage';
+import VolunteerOpportunitiesPage from './pages/Volunteer/OpportunitiesPage';
+import VolunteerProfilePage from './pages/Volunteer/ProfilePage';
+import VolunteerHistoryPage from './pages/Volunteer/HistoryPage';
+import SoftSkillsTestPage from './pages/Volunteer/SoftSkillsTestPage';
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -46,6 +50,10 @@ export const App: React.FC = () => {
           <Route path="student/opportunities" element={<StudentOpportunitiesPage />} />
           <Route path="student/profile" element={<StudentProfilePage />} />
           <Route path="volunteer" element={<VolunteerDashboard />} />
+          <Route path="volunteer/opportunities" element={<VolunteerOpportunitiesPage />} />
+          <Route path="volunteer/profile" element={<VolunteerProfilePage />} />
+          <Route path="volunteer/history" element={<VolunteerHistoryPage />} />
+          <Route path="volunteer/soft-skills-test" element={<SoftSkillsTestPage />} />
           <Route path="charity" element={<CharityDashboard />} />
           <Route path="company" element={<CompanyDashboard />} />
           <Route path="company/post" element={<PostInternshipPage />} />

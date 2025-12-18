@@ -7,7 +7,7 @@ import { LangProvider } from '@/context/LangContext';
 import { AuthProvider } from '@/context/AuthContext';
 import App from './App';
 import '@/styles/index.css';
-import '@/lib/i18n';
+import '@/hooks/lib/i18n';
 
 const queryClient = new QueryClient();
 

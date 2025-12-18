@@ -1,7 +1,16 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
-import { LogOut, Home, Briefcase, User, ClipboardList, Users, UserPlus } from 'lucide-react';
+import {
+  LogOut,
+  Home,
+  Briefcase,
+  User,
+  ClipboardList,
+  Users,
+  UserPlus,
+  Award,
+} from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
 
@@ -48,6 +57,16 @@ const CompanyNav = () => (
   </>
 );
 
+const VolunteerNav = () => (
+  <>
+    <NavItem to="/dashboard/volunteer" icon={<Home size={18} />} label="Overview" end />
+    <NavItem to="/dashboard/volunteer/opportunities" icon={<Briefcase size={18} />} label="Browse Opportunities" />
+    <NavItem to="/dashboard/volunteer/profile" icon={<User size={18} />} label="My Profile" />
+    <NavItem to="/dashboard/volunteer/history" icon={<ClipboardList size={18} />} label="Application History" />
+    <NavItem to="/dashboard/volunteer/soft-skills-test" icon={<Award size={18} />} label="Soft Skills Test" />
+  </>
+);
+
 const DefaultNav: React.FC<{role: UserRole}> = ({ role }) => (
    <>
     <NavItem to={`/dashboard/${role}`} icon={<Home size={18} />} label="Overview" end />
@@ -64,6 +83,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
         return <StudentNav />;
       case 'company':
         return <CompanyNav />;
+      case 'volunteer':
+        return <VolunteerNav />;
       // TODO: Add cases for other roles
       default:
         return <DefaultNav role={role} />;

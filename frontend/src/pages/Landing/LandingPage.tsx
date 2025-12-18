@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { HeroSplineSection } from '@/components/landing/HeroSplineSection';
 import { Button } from '@/components/ui/Button';
-import { fadeInUp, fadeIn, staggerContainer, scaleIn } from '@/lib/animationVariants';
+import { fadeInUp, fadeIn, staggerContainer, scaleIn } from '@/hooks/lib/animationVariants';
 
 export const LandingPage: React.FC = () => {
   return (

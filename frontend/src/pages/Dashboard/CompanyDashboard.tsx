@@ -33,7 +33,7 @@ const CompanyDashboard = () => {
   ];
 
   return (
-    <div className="space-y-6 p-4 md:p-8">
+    <div className="space-y-6 px-4 md:px-32 py-6">
       <h1 className="text-2xl font-semibold">Company Dashboard</h1>
 
       {isLoading ? (
