@@ -1,15 +1,22 @@
-// src/types/charity.ts
-export interface CharityOpportunity {
-  id: string;
-  title: string;
-  type: 'volunteering' | 'internship';
-  hours: number;
-  status: 'Open' | 'Closed';
+export interface CharityStats {
+  opportunitiesPosted: number;
+  applicationsReceived: number;
+  volunteersAccepted: number;
+  initiativesLaunched: number;
 }
 
-export interface CharityVolunteer {
+export interface Charity {
   id: string;
   name: string;
-  university: string;
-  hoursCompleted: number;
+  email: string;
+  // Add other charity-specific fields here
+}
+
+export type ApplicationStatus = 'Pending' | 'Accepted' | 'Rejected';
+
+export interface Applicant {
+  id: string;
+  volunteerName: string;
+  opportunityTitle: string;
+  status: ApplicationStatus;
 }

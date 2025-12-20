@@ -27,6 +27,13 @@ import SoftSkillsTestPage from './pages/Volunteer/SoftSkillsTestPage';
 import { UniversityDashboardPage } from '@/pages/University/UniversityDashboardPage';
 import { StudentsPage } from '@/pages/University/StudentsPage';
 import { ApprovalsPage } from '@/pages/University/ApprovalsPage';
+import PostOpportunityPage from './pages/Charity/PostOpportunityPage';
+import CharityApplicationManagerPage from './pages/Charity/ApplicationManagerPage';
+import PostInitiativePage from './pages/Charity/PostInitiativePage';
+import CampaignManagerPage from './pages/Charity/CampaignManagerPage';
+import CertificateSystemPage from './pages/Charity/CertificateSystemPage';
+
+
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -56,12 +63,21 @@ export const App: React.FC = () => {
                   <Route path="volunteer/profile" element={<VolunteerProfilePage />} />
                   <Route path="volunteer/history" element={<VolunteerHistoryPage />} />
                   <Route path="volunteer/soft-skills-test" element={<SoftSkillsTestPage />} />
+                  
                   <Route path="charity" element={<CharityDashboard />} />
+                  <Route path="charity/post-opportunity" element={<PostOpportunityPage />} />
+                  <Route path="charity/applications" element={<CharityApplicationManagerPage />} />
+                  <Route path="charity/post-initiative" element={<PostInitiativePage />} />
+                  <Route path="charity/campaigns" element={<CampaignManagerPage />} />
+                  <Route path="charity/certificates" element={<CertificateSystemPage />} />
+
                   <Route path="company" element={<CompanyDashboard />} />
                   <Route path="company/post" element={<PostInternshipPage />} />
                   <Route path="company/applications" element={<ApplicationManagerPage />} />
                   <Route path="company/supervisors" element={<SupervisorManagerPage />} />
+                  
                   <Route path="disabled_student" element={<DisabledStudentDashboard />} />
+                  
                   <Route path="university" element={<Navigate to="/dashboard/university/dashboard" replace />} />
                   <Route path="university/dashboard" element={<UniversityDashboardPage />} />
                   <Route path="university/students" element={<StudentsPage />} />

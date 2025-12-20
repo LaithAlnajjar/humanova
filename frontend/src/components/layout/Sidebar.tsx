@@ -12,6 +12,8 @@ import {
   Award,
   LayoutDashboard,
   CheckSquare,
+  PlusSquare,
+  Volume2,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
@@ -77,6 +79,17 @@ const UniversityNav = () => (
   </>
 );
 
+const CharityNav = () => (
+  <>
+    <NavItem to="/dashboard/charity" icon={<LayoutDashboard size={18} />} label="Overview" end />
+    <NavItem to="/dashboard/charity/post-opportunity" icon={<Briefcase size={18} />} label="Post Opportunities" />
+    <NavItem to="/dashboard/charity/applications" icon={<Users size={18} />} label="Application Management" />
+    <NavItem to="/dashboard/charity/post-initiative" icon={<PlusSquare size={18} />} label="Post Initiatives" />
+    <NavItem to="/dashboard/charity/campaigns" icon={<Volume2 size={18} />} label="Campaign Management" />
+    <NavItem to="/dashboard/charity/certificates" icon={<Award size={18} />} label="Certificate System" />
+  </>
+);
+
 const DefaultNav: React.FC<{role: UserRole}> = ({ role }) => (
    <>
     <NavItem to={`/dashboard/${role}`} icon={<Home size={18} />} label="Overview" end />
@@ -97,7 +110,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
         return <VolunteerNav />;
       case 'university':
         return <UniversityNav />;
-      // TODO: Add cases for other roles
+      case 'charity':
+        return <CharityNav />;
       default:
         return <DefaultNav role={role} />;
     }
