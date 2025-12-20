@@ -10,7 +10,6 @@ import { StudentDashboard } from '@/pages/Dashboard/StudentDashboard';
 import { VolunteerDashboard } from '@/pages/Dashboard/VolunteerDashboard';
 import { CharityDashboard } from '@/pages/Dashboard/CharityDashboard';
 import CompanyDashboard from '@/pages/Dashboard/CompanyDashboard';
-import { UniversityDashboard } from '@/pages/Dashboard/UniversityDashboard';
 import { DisabledStudentDashboard } from '@/pages/Dashboard/DisabledStudentDashboard';
 import { OpportunitiesPage } from '@/pages/Opportunities/OpportunitiesPage';
 import { SupportPage } from '@/pages/Support/SupportPage';
@@ -25,6 +24,9 @@ import VolunteerOpportunitiesPage from './pages/Volunteer/OpportunitiesPage';
 import VolunteerProfilePage from './pages/Volunteer/ProfilePage';
 import VolunteerHistoryPage from './pages/Volunteer/HistoryPage';
 import SoftSkillsTestPage from './pages/Volunteer/SoftSkillsTestPage';
+import { UniversityDashboardPage } from '@/pages/University/UniversityDashboardPage';
+import { StudentsPage } from '@/pages/University/StudentsPage';
+import { ApprovalsPage } from '@/pages/University/ApprovalsPage';
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -43,27 +45,30 @@ export const App: React.FC = () => {
         </Route>
 
         {/* Dashboard routes with Sidebar */}
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<Navigate to="/dashboard/student" replace />} />
-          <Route path="student" element={<StudentDashboard />} />
-          <Route path="student/tracking" element={<TrackingPage />} />
-          <Route path="student/opportunities" element={<StudentOpportunitiesPage />} />
-          <Route path="student/profile" element={<StudentProfilePage />} />
-          <Route path="volunteer" element={<VolunteerDashboard />} />
-          <Route path="volunteer/opportunities" element={<VolunteerOpportunitiesPage />} />
-          <Route path="volunteer/profile" element={<VolunteerProfilePage />} />
-          <Route path="volunteer/history" element={<VolunteerHistoryPage />} />
-          <Route path="volunteer/soft-skills-test" element={<SoftSkillsTestPage />} />
-          <Route path="charity" element={<CharityDashboard />} />
-          <Route path="company" element={<CompanyDashboard />} />
-          <Route path="company/post" element={<PostInternshipPage />} />
-          <Route path="company/applications" element={<ApplicationManagerPage />} />
-          <Route path="company/supervisors" element={<SupervisorManagerPage />} />
-          <Route path="university" element={<UniversityDashboard />} />
-          <Route path="disabled_student" element={<DisabledStudentDashboard />} />
-        </Route>
-
-        {/* Fallback */}
+                <Route path="/dashboard" element={<DashboardLayout />}>
+                  <Route index element={<Navigate to="/dashboard/student" replace />} />
+                  <Route path="student" element={<StudentDashboard />} />
+                  <Route path="student/tracking" element={<TrackingPage />} />
+                  <Route path="student/opportunities" element={<StudentOpportunitiesPage />} />
+                  <Route path="student/profile" element={<StudentProfilePage />} />
+                  <Route path="volunteer" element={<VolunteerDashboard />} />
+                  <Route path="volunteer/opportunities" element={<VolunteerOpportunitiesPage />} />
+                  <Route path="volunteer/profile" element={<VolunteerProfilePage />} />
+                  <Route path="volunteer/history" element={<VolunteerHistoryPage />} />
+                  <Route path="volunteer/soft-skills-test" element={<SoftSkillsTestPage />} />
+                  <Route path="charity" element={<CharityDashboard />} />
+                  <Route path="company" element={<CompanyDashboard />} />
+                  <Route path="company/post" element={<PostInternshipPage />} />
+                  <Route path="company/applications" element={<ApplicationManagerPage />} />
+                  <Route path="company/supervisors" element={<SupervisorManagerPage />} />
+                  <Route path="disabled_student" element={<DisabledStudentDashboard />} />
+                  <Route path="university" element={<Navigate to="/dashboard/university/dashboard" replace />} />
+                  <Route path="university/dashboard" element={<UniversityDashboardPage />} />
+                  <Route path="university/students" element={<StudentsPage />} />
+                  <Route path="university/approvals" element={<ApprovalsPage />} />
+                </Route>
+        
+                {/* Fallback */}
         <Route
           path="*"
           element={<div className="container py-16">{t('nav.home')}</div>}
