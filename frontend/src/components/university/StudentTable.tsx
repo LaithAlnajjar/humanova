@@ -54,7 +54,7 @@ export const StudentTable: React.FC<StudentTableProps> = ({ initialStatusFilter 
   if (isLoading) {
     return (
       <Card className="p-6">
-        <div className="h-64 animate-pulse rounded-md bg-gray-200 dark:bg-gray-700"></div>
+        <div className="h-64 animate-pulse rounded-md bg-gray-200 dark:bg-gray-700" />
       </Card>
     );
   }
@@ -95,7 +95,7 @@ export const StudentTable: React.FC<StudentTableProps> = ({ initialStatusFilter 
               name="status"
               value={filters.status}
               onChange={handleFilterChange}
-              className="input-base w-full dark:bg-gray-800 dark:text-white h-10 px-3"
+              className="input-base w-full dark:bg-gray-800 dark:text-white"
             >
               <option value="">All Statuses</option>
               <option value="Pending">Pending</option>

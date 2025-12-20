@@ -74,9 +74,9 @@ const VolunteerNav = () => (
 
 const UniversityNav = () => (
   <>
-    <NavItem to="/university/dashboard" icon={<LayoutDashboard size={18} />} label="Overview" end />
-    <NavItem to="/university/students" icon={<Users size={18} />} label="Students" />
-    <NavItem to="/university/approvals" icon={<CheckSquare size={18} />} label="Approvals" />
+    <NavItem to="/dashboard/university/dashboard" icon={<LayoutDashboard size={18} />} label="Overview" end />
+    <NavItem to="/dashboard/university/students" icon={<Users size={18} />} label="Students" />
+    <NavItem to="/dashboard/university/approvals" icon={<CheckSquare size={18} />} label="Approvals" />
   </>
 );
 
