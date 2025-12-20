@@ -51,7 +51,7 @@ export const LoginPage: React.FC = () => {
           navigate('/dashboard/university');
           break;
         case 'disabled_student':
-          navigate('/dashboard/disabled_student');
+          navigate('/dashboard/disabled-student');
           break;
         default:
           // Fallback to a generic dashboard if the role is not recognized.
@@ -87,7 +87,29 @@ export const LoginPage: React.FC = () => {
       role: role
     };
     login(mockUser);
-    navigate(`/dashboard/${role}`);
+    switch (role) {
+      case 'student':
+        navigate('/dashboard/student');
+        break;
+      case 'volunteer':
+        navigate('/dashboard/volunteer');
+        break;
+      case 'charity':
+        navigate('/dashboard/charity');
+        break;
+      case 'company':
+        navigate('/dashboard/company');
+        break;
+      case 'university':
+        navigate('/dashboard/university');
+        break;
+      case 'disabled_student':
+        navigate('/dashboard/disabled-student');
+        break;
+      default:
+        navigate('/dashboard');
+        break;
+    }
   };
 
   return (

@@ -24,7 +24,7 @@ export const CharityDashboard: React.FC = () => {
     : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4">
       <header className="space-y-2">
         <div className="flex justify-between items-start">
           <div>

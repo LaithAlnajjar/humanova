@@ -5,7 +5,7 @@ import { ImpactSummary } from '@/components/dashboard/ImpactSummary';
 
 export const DisabledStudentDashboard: React.FC = () => {
   return (
-    <>
+    <div className="space-y-6 px-32">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">
           Accessibility Overview
@@ -51,6 +51,6 @@ export const DisabledStudentDashboard: React.FC = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };

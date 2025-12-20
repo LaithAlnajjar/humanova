@@ -14,6 +14,7 @@ import {
   CheckSquare,
   PlusSquare,
   Volume2,
+  Star,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
@@ -90,6 +91,15 @@ const CharityNav = () => (
   </>
 );
 
+const DisabledStudentNav = () => (
+  <>
+    <NavItem to="/dashboard/disabled-student" icon={<Home size={18} />} label="Overview" end />
+    <NavItem to="/dashboard/disabled-student/profile" icon={<User size={18} />} label="My Profile" />
+    <NavItem to="/dashboard/disabled-student/matching" icon={<Users size={18} />} label="Matching" />
+    <NavItem to="/dashboard/disabled-student/rating" icon={<Star size={18} />} label="Rate Assistance" />
+  </>
+);
+
 const DefaultNav: React.FC<{role: UserRole}> = ({ role }) => (
    <>
     <NavItem to={`/dashboard/${role}`} icon={<Home size={18} />} label="Overview" end />
@@ -112,6 +122,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
         return <UniversityNav />;
       case 'charity':
         return <CharityNav />;
+      case 'disabled_student':
+        return <DisabledStudentNav />;
       default:
         return <DefaultNav role={role} />;
     }
