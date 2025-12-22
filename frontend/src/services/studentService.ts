@@ -1,4 +1,5 @@
 import { StudentProfile, TrackingLog } from '@/types/student';
+import { SupportRequest } from '@/types/pod';
 
 // ===== MOCK DATABASE =====
 
@@ -61,6 +62,25 @@ let MOCK_STUDENT_PROFILE: StudentProfile = {
   },
 };
 
+const mockSupportRequests: SupportRequest[] = [
+  {
+    id: 'req-1',
+    podId: 'pod-1',
+    category: 'Academic Support',
+    description: 'Need help with note-taking in Data Structures lecture.',
+    urgency: 'High',
+    status: 'Open',
+  },
+  {
+    id: 'req-2',
+    podId: 'pod-2',
+    category: 'Campus Navigation',
+    description: 'I need assistance getting from the library to the science building.',
+    urgency: 'Medium',
+    status: 'Open',
+  },
+];
+
 // ===== MOCK SERVICE FUNCTIONS =====
 
 /**
@@ -121,4 +141,9 @@ export const toggleFollowCompany = async (
   await new Promise(resolve => setTimeout(resolve, 200));
   // In a real app, this would update a user's followed companies list.
   return !isFollowing;
+};
+
+export const getPodSupportRequests = async (): Promise<SupportRequest[]> => {
+  await new Promise(resolve => setTimeout(resolve, 700));
+  return mockSupportRequests;
 };

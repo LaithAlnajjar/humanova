@@ -1,4 +1,4 @@
-import { PODProfile, VolunteerMatch, Rating } from '../types/pod';
+import { PODProfile, VolunteerMatch, Rating, SupportRequest } from '../types/pod';
 
 const API_URL = '/api/pod';
 
@@ -29,4 +29,15 @@ export const getVolunteerMatches = async (id: string): Promise<VolunteerMatch[]>
 export const submitRating = async (rating: Rating): Promise<Rating> => {
   // Replace with actual API call
   return Promise.resolve(rating);
+};
+
+export const createSupportRequest = async (supportRequest: Omit<SupportRequest, 'id' | 'podId' | 'status'>): Promise<SupportRequest> => {
+  // Replace with actual API call
+  console.log('Submitting support request:', supportRequest);
+  return Promise.resolve({
+    id: new Date().toISOString(),
+    podId: 'pod1', // Assuming a logged in POD user
+    ...supportRequest,
+    status: 'Open',
+  });
 };

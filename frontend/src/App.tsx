@@ -17,6 +17,7 @@ import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { TrackingPage } from '@/pages/Student/TrackingPage';
 import { StudentOpportunitiesPage } from '@/pages/Student/StudentOpportunitiesPage';
 import StudentProfilePage from '@/pages/Student/StudentProfilePage';
+import { HelpRequestsPage } from './pages/Student/HelpRequestsPage';
 import PostInternshipPage from './pages/Company/PostInternshipPage';
 import ApplicationManagerPage from './pages/Company/ApplicationManagerPage';
 import SupervisorManagerPage from './pages/Company/SupervisorManagerPage';
@@ -61,6 +62,7 @@ export const App: React.FC = () => {
                   <Route path="student/tracking" element={<TrackingPage />} />
                   <Route path="student/opportunities" element={<StudentOpportunitiesPage />} />
                   <Route path="student/profile" element={<StudentProfilePage />} />
+                  <Route path="student/help-requests" element={<HelpRequestsPage />} />
                   <Route path="volunteer" element={<VolunteerDashboard />} />
                   <Route path="volunteer/opportunities" element={<VolunteerOpportunitiesPage />} />
                   <Route path="volunteer/profile" element={<VolunteerProfilePage />} />

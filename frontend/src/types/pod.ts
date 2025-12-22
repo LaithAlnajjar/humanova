@@ -20,3 +20,12 @@ export interface Rating {
   rating: number;
   comment: string;
 }
+
+export interface SupportRequest {
+  id: string;
+  podId: string;
+  category: string;
+  description: string;
+  urgency: 'Low' | 'Medium' | 'High';
+  status: 'Open' | 'In Progress' | 'Closed';
+}

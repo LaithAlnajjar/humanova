@@ -15,6 +15,7 @@ import {
   PlusSquare,
   Volume2,
   Star,
+  HeartHandshake,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { UserRole } from '@/types/auth';
@@ -50,6 +51,7 @@ const StudentNav = () => (
     <NavItem to="/dashboard/student/opportunities" icon={<Briefcase size={18} />} label="Browse Internships" />
     <NavItem to="/dashboard/student/profile" icon={<User size={18} />} label="My Profile" />
     <NavItem to="/dashboard/student/tracking" icon={<ClipboardList size={18} />} label="Training Log" />
+    <NavItem to="/dashboard/student/help-requests" icon={<HeartHandshake size={18} />} label="Help Requests" />
   </>
 );
 
