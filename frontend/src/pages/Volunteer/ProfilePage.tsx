@@ -60,7 +60,7 @@ const ProfilePage: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column */}
-        <div className="lg:col-span-1 space-y-6">
+        <div className="lg:col-span-1 space-y-6 flex flex-col">
           <Card className="p-6">
             <div className="flex flex-col items-center text-center">
               <div className="rounded-full bg-gray-200 p-4 dark:bg-gray-700">
@@ -85,7 +85,7 @@ const ProfilePage: React.FC = () => {
               value={profile.stats.generalRating}
             />
           </div>
-          <Card className="p-6">
+          <Card className="p-6 flex-grow">
             <h3 className="font-semibold mb-3">Commitment</h3>
             <p className="text-lg">{profile.commitment}</p>
           </Card>
