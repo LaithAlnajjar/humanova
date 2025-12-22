@@ -24,6 +24,7 @@ export interface Rating {
 export interface SupportRequest {
   id: string;
   podId: string;
+  volunteerId?: string;
   category: string;
   description: string;
   urgency: 'Low' | 'Medium' | 'High';

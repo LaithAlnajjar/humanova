@@ -34,7 +34,7 @@ import PostInitiativePage from './pages/Charity/PostInitiativePage';
 import CampaignManagerPage from './pages/Charity/CampaignManagerPage';
 import CertificateSystemPage from './pages/Charity/CertificateSystemPage';
 import PODProfilePage from './pages/POD/PODProfilePage';
-import PODMatchingPage from './pages/POD/PODMatchingPage';
+import PublishHelpRequestPage from './pages/POD/PublishHelpRequestPage';
 import PODRatingPage from './pages/POD/PODRatingPage';
 
 
@@ -83,7 +83,8 @@ export const App: React.FC = () => {
                   
                   <Route path="disabled-student" element={<DisabledStudentDashboard />} />
                   <Route path="disabled-student/profile" element={<PODProfilePage />} />
-                  <Route path="disabled-student/matching" element={<PODMatchingPage />} />
+                  <Route path="disabled-student/publish-request" element={<PublishHelpRequestPage />} />
+
                   <Route path="disabled-student/rating" element={<PODRatingPage />} />
 
                   <Route path="university" element={<Navigate to="/dashboard/university/dashboard" replace />} />

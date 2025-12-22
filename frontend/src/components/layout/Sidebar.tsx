@@ -97,7 +97,7 @@ const DisabledStudentNav = () => (
   <>
     <NavItem to="/dashboard/disabled-student" icon={<Home size={18} />} label="Overview" end />
     <NavItem to="/dashboard/disabled-student/profile" icon={<User size={18} />} label="My Profile" />
-    <NavItem to="/dashboard/disabled-student/matching" icon={<Users size={18} />} label="Matching" />
+    <NavItem to="/dashboard/disabled-student/publish-request" icon={<PlusSquare size={18} />} label="Publish Help Request" />
     <NavItem to="/dashboard/disabled-student/rating" icon={<Star size={18} />} label="Rate Assistance" />
   </>
 );

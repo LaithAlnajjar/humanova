@@ -41,3 +41,17 @@ export const createSupportRequest = async (supportRequest: Omit<SupportRequest, 
     status: 'Open',
   });
 };
+
+export const getPodSupportRequests = async (): Promise<SupportRequest[]> => {
+  // Replace with actual API call
+  return Promise.resolve([
+    { id: '1', podId: 'pod1', volunteerId: 'vol1', category: 'Academic Support', description: 'Need help with note taking for biology class.', urgency: 'High', status: 'Closed' },
+    { id: '2', podId: 'pod1', volunteerId: 'vol2', category: 'Transportation', description: 'Need a ride to a doctor appointment.', urgency: 'Medium', status: 'Closed' },
+    { id: '3', podId: 'pod1', category: 'Daily Living', description: 'Grocery shopping assistance.', urgency: 'Low', status: 'Open' },
+  ]);
+};
+
+export const getCompletedHelpRequests = async (): Promise<SupportRequest[]> => {
+    const requests = await getPodSupportRequests();
+    return requests.filter(request => request.status === 'Closed');
+};

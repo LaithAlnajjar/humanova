@@ -12,10 +12,11 @@ const ratingSchema = z.object({
 });
 
 interface RatingFormProps {
-  interactionId: string; // To associate the rating with a specific interaction/volunteer
+  interactionId: string;
+  volunteerId?: string;
 }
 
-export const RatingForm: React.FC<RatingFormProps> = ({ interactionId }) => {
+export const RatingForm: React.FC<RatingFormProps> = ({ interactionId, volunteerId }) => {
   const {
     control,
     handleSubmit,
@@ -32,10 +33,14 @@ export const RatingForm: React.FC<RatingFormProps> = ({ interactionId }) => {
   const rating = watch('rating');
 
   const onSubmit = async (data: z.infer<typeof ratingSchema>) => {
+    if (!volunteerId) {
+      alert('Cannot submit rating without a volunteer.');
+      return;
+    }
     try {
       await submitRating({
         id: interactionId,
-        volunteerId: 'volunteer-1', // This would be dynamic
+        volunteerId: volunteerId,
         ...data,
       });
       alert('Rating submitted successfully!');
