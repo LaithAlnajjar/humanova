@@ -36,7 +36,7 @@ Humanova is a unified ecosystem connecting students, volunteers, charities, comp
 
 Humanova uses **Vitest** for unit testing.
 
-````bash
+```bash
 npm test
 🏗 Project Structure
 The project follows a modular, role-based architecture:
@@ -75,7 +75,6 @@ Internationalization: i18next (English & Arabic support)
 
 This document outlines the technical design, data flow, and architectural decisions.
 
-```markdown
 # Humanova System Architecture
 
 ## 1. Architectural Overview
@@ -116,5 +115,4 @@ The `src/services` folder is the **Anti-Corruption Layer**. To connect a real ba
 1.  Replace mock return statements in `services/*.ts` with `axios.get/post`.
 2.  Configure `VITE_API_BASE_URL` in `.env`.
 3.  No changes will be required in the UI components.
-
-````
+```
