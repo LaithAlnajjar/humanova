@@ -1,11 +1,16 @@
 // src/pages/Landing/LandingPage.tsx
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-import { HeroSplineSection } from '@/components/landing/HeroSplineSection';
-import { Button } from '@/components/ui/Button';
-import { fadeInUp, fadeIn, staggerContainer, scaleIn } from '@/hooks/lib/animationVariants';
+import { HeroSplineSection } from "@/components/landing/HeroSplineSection";
+import { Button } from "@/components/ui/Button";
+import {
+  fadeInUp,
+  fadeIn,
+  staggerContainer,
+  scaleIn,
+} from "@/hooks/lib/animationVariants";
 
 export const LandingPage: React.FC = () => {
   return (
@@ -22,17 +27,14 @@ export const LandingPage: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          <motion.div
-            variants={fadeInUp}
-            className="space-y-2 max-w-2xl"
-          >
+          <motion.div variants={fadeInUp} className="space-y-2 max-w-2xl">
             <h2 className="text-xl md:text-2xl font-semibold">
               Built around every role on campus.
             </h2>
             <p className="text-sm md:text-base text-slate-300">
-              Humanova keeps the experience soft and accessible whether you are a student,
-              volunteer, charity, company partner, or part of a university team — with
-              extra care for students with disabilities.
+              Humanova keeps the experience soft and accessible whether you are
+              a student, volunteer, charity, company partner, or part of a
+              university team — with extra care for students with disabilities.
             </p>
           </motion.div>
 
@@ -42,17 +44,17 @@ export const LandingPage: React.FC = () => {
           >
             {[
               {
-                title: 'Students',
-                body: 'Discover volunteering, training, and accessibility support with clear expectations and human-first explanations.'
+                title: "Students",
+                body: "Discover volunteering, training, and accessibility support with clear expectations and human-first explanations.",
               },
               {
-                title: 'Volunteers & charities',
-                body: 'Coordinate helpers, log hours, and match with students or causes that truly need your skills.'
+                title: "Volunteers & charities",
+                body: "Coordinate helpers, log hours, and match with students or causes that truly need your skills.",
               },
               {
-                title: 'Companies & universities',
-                body: 'Offer internships and programs, track impact, and make your pipelines more inclusive and transparent.'
-              }
+                title: "Companies & universities",
+                body: "Offer internships and programs, track impact, and make your pipelines more inclusive and transparent.",
+              },
             ].map((item) => (
               <motion.div
                 key={item.title}
@@ -62,9 +64,7 @@ export const LandingPage: React.FC = () => {
                 <p className="text-sm font-semibold text-emerald-200">
                   {item.title}
                 </p>
-                <p className="text-xs md:text-sm text-slate-200">
-                  {item.body}
-                </p>
+                <p className="text-xs md:text-sm text-slate-200">{item.body}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -88,8 +88,9 @@ export const LandingPage: React.FC = () => {
               Bring Humanova to your campus or organization.
             </h3>
             <p className="text-xs md:text-sm text-slate-300 max-w-xl">
-              Create an account as a student, volunteer, charity, company or university.
-              You can always add accessibility preferences later — carefully and privately.
+              Create an account as a student, volunteer, charity, company or
+              university. You can always add accessibility preferences later —
+              carefully and privately.
             </p>
           </div>
 
