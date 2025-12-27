@@ -51,6 +51,7 @@ import { UniversityDashboardPage } from "@/pages/University/UniversityDashboardP
 import { StudentsPage } from "@/pages/University/StudentsPage";
 import { ApprovalsPage } from "@/pages/University/ApprovalsPage";
 import MyInternshipsPage from "./pages/Company/MyInternshipsPage";
+import StudentOpportunitiesPage from "./pages/Student/StudentOpportunitiesPage";
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -74,6 +75,11 @@ export const App: React.FC = () => {
           {/* 🛡️ STUDENT ROUTES */}
           <Route element={<ProtectedRoute allowedRoles={[UserRole.Student]} />}>
             <Route path="student" element={<StudentDashboard />} />
+            <Route
+              path="student/opportunities"
+              element={<StudentOpportunitiesPage />}
+            />{" "}
+            {/* UPDATED */}
             <Route path="student/tracking" element={<TrackingPage />} />
             <Route path="student/opportunities" />
             <Route path="student/profile" element={<StudentProfilePage />} />

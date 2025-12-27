@@ -63,4 +63,34 @@ export const internshipService = {
     if (!response.ok) throw new Error("Failed to fetch internships");
     return response.json();
   },
+
+  // E) Get Single Detail (Needed because List doesn't have description/skills)
+  getById: async (id: number): Promise<any> => {
+    // Returns full object
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch details");
+    return response.json();
+  },
+
+  // F) Apply
+  apply: async (
+    id: number,
+    data: { cvUrl: string; linkedInUrl: string; coverLetter: string }
+  ) => {
+    const response = await fetch(`${API_URL}/${id}/apply`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text);
+    }
+    return response.json();
+  },
 };

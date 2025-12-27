@@ -12,8 +12,8 @@ import {
 } from "@/types/enums";
 
 // Components
-import { OpportunityCard } from "@/components/volunteer/OpportunityCard";
-import { OpportunityModal } from "@/components/volunteer/OpportunityModal";
+import { OpportunityCard } from "@/components/opportunities/OpportunityCard";
+import { OpportunityModal } from "@/components/opportunities/OpportunityModal";
 
 const OpportunitiesPage: React.FC = () => {
   const [selectedOpportunity, setSelectedOpportunity] = useState<any | null>(

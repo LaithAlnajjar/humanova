@@ -169,3 +169,21 @@ export enum ReviewMethod {
   Interview = 1,
   SimpleTest = 2,
 }
+
+export interface InternshipListResponse {
+  id: number;
+  title: string;
+  attendanceType: AttendanceType;
+  requiredMajor: string;
+  isPaid: boolean;
+  deadlineUtc: string;
+  seatsAvailable: number;
+  acceptedCount: number;
+  // Note: Description and CompanyName are NOT in the List projection from backend yet
+}
+
+export interface InternshipFilters {
+  major?: string;
+  attendanceType?: string; // string because selects usually handle strings
+  isPaid?: string; // 'true' | 'false' | ''
+}

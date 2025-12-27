@@ -62,7 +62,7 @@ const StudentNav = () => (
       end
     />
     <NavItem
-      to="/dashboard/student/opportunities"
+      to="/dashboard/student/opportunities" // This route now exists
       icon={<Briefcase size={18} />}
       label="Browse Internships"
     />

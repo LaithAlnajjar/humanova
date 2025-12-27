@@ -19,6 +19,7 @@ interface OpportunityCardProps {
     timeCommitment?: string;
     volunteersNeeded?: number;
     deadline?: string;
+    type?: string; // 'volunteering' or 'internship'
   };
   onClick?: () => void;
 }
@@ -28,7 +29,14 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
   onClick,
 }) => {
   const { user } = useAuth();
+
+  // Role Checks
   const isVolunteer = user?.role === UserRole.Volunteer;
+  const isStudent =
+    user?.role === UserRole.Student || user?.role === UserRole.DisabledStudent;
+
+  // Determine if this is an internship
+  const isInternship = opportunity.type === "internship";
 
   const mutation = useMutation({
     mutationFn: () => opportunityService.apply(Number(opportunity.id)),
@@ -40,21 +48,28 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
     },
   });
 
-  // Handle Quick Apply button click
-  const handleApply = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Stop click from opening details modal
-    if (!isVolunteer) {
-      alert("Only registered Volunteers can apply for opportunities.");
+  const handleQuickApply = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    // 1. Validation for Internship (Cannot Quick Apply)
+    if (isInternship) {
+      // Internships require a CV, so we redirect to the Details Modal
+      if (onClick) onClick();
       return;
     }
+
+    // 2. Validation for Volunteering
+    if (!isVolunteer) {
+      alert("Only registered Volunteers can apply for this opportunity.");
+      return;
+    }
+
     if (confirm(`Apply for "${opportunity.title}"?`)) {
       mutation.mutate();
     }
   };
 
-  // Handle Card or 'View Details' click
   const handleCardClick = () => {
-    console.log("Card clicked:", opportunity.id); // Debug log
     if (onClick) onClick();
   };
 
@@ -63,7 +78,7 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
       className="h-full cursor-pointer group"
-      onClick={handleCardClick} // Make whole wrapper clickable
+      onClick={handleCardClick}
     >
       <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 backdrop-blur-sm">
         {/* Image Section */}
@@ -78,17 +93,28 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-          {/* Quick Apply Overlay */}
-          <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-            <Button
-              size="sm"
-              className="w-full bg-white text-black hover:bg-gray-100 border-none font-semibold shadow-lg"
-              onClick={handleApply}
-              disabled={mutation.isPending}
-            >
-              {mutation.isPending ? "Applying..." : "Quick Apply"}
-            </Button>
-          </div>
+          {/* Quick Apply Overlay (Only for Volunteers) */}
+          {!isInternship && (
+            <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+              <Button
+                size="sm"
+                className="w-full bg-white text-black hover:bg-gray-100 border-none font-semibold shadow-lg"
+                onClick={handleQuickApply}
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? "Applying..." : "Quick Apply"}
+              </Button>
+            </div>
+          )}
+
+          {/* Badge for Internships */}
+          {isInternship && (
+            <div className="absolute top-4 right-4">
+              <span className="px-2 py-1 bg-blue-600 text-white text-xs font-bold rounded-md shadow-md uppercase tracking-wide">
+                Internship
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Content Section */}
@@ -109,7 +135,6 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             {opportunity.description}
           </p>
 
-          {/* Metadata Badges */}
           <div className="space-y-2 mb-5">
             <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
               <MapPin className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
@@ -119,12 +144,22 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
               <Clock className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
               <span>{opportunity.timeCommitment || "Flexible"}</span>
             </div>
-            {opportunity.volunteersNeeded && (
+
+            {/* Show different icon for internship seats */}
+            {isInternship ? (
               <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                 <Users className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
-                <span>{opportunity.volunteersNeeded} Volunteers needed</span>
+                <span>{opportunity.volunteersNeeded} Seats Available</span>
               </div>
+            ) : (
+              opportunity.volunteersNeeded && (
+                <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                  <Users className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
+                  <span>{opportunity.volunteersNeeded} Volunteers needed</span>
+                </div>
+              )
             )}
+
             {opportunity.deadline && (
               <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                 <Calendar className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
@@ -135,16 +170,15 @@ export const OpportunityCard: React.FC<OpportunityCardProps> = ({
             )}
           </div>
 
-          {/* View Details Button (Visual Cue Only, click handled by parent) */}
           <Button
             variant="outline"
             className="w-full mt-auto border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
             onClick={(e) => {
-              e.stopPropagation(); // Avoid double-trigger
+              e.stopPropagation();
               handleCardClick();
             }}
           >
-            View Details
+            {isInternship ? "View Details & Apply" : "View Details"}
           </Button>
         </div>
       </Card>
