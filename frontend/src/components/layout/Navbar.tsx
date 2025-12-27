@@ -57,14 +57,7 @@ export const Navbar: React.FC = () => {
             >
               {t("nav.opportunities")}
             </NavLink>
-            <NavLink
-              to="/support"
-              className={({ isActive }) =>
-                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
-              }
-            >
-              {t("nav.support")}
-            </NavLink>
+
           </div>
 
           {/* Auth section */}

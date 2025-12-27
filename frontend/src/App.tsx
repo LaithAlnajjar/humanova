@@ -12,7 +12,7 @@ import { CharityDashboard } from '@/pages/Dashboard/CharityDashboard';
 import CompanyDashboard from '@/pages/Dashboard/CompanyDashboard';
 import { DisabledStudentDashboard } from '@/pages/Dashboard/DisabledStudentDashboard';
 import { OpportunitiesPage } from '@/pages/Opportunities/OpportunitiesPage';
-import { SupportPage } from '@/pages/Support/SupportPage';
+
 import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { TrackingPage } from '@/pages/Student/TrackingPage';
 import { StudentOpportunitiesPage } from '@/pages/Student/StudentOpportunitiesPage';
@@ -51,7 +51,7 @@ export const App: React.FC = () => {
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
           <Route path="/opportunities" element={<OpportunitiesPage />} />
-          <Route path="/support" element={<SupportPage />} />
+
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 

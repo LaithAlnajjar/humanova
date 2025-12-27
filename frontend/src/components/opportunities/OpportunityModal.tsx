@@ -5,9 +5,14 @@ import { Button } from '@/components/ui/Button';
 interface Props {
   opportunity: Opportunity | null;
   onClose: () => void;
+  showActions?: boolean;
 }
 
-export const OpportunityModal: React.FC<Props> = ({ opportunity, onClose }) => {
+export const OpportunityModal: React.FC<Props> = ({
+  opportunity,
+  onClose,
+  showActions = true,
+}) => {
   if (!opportunity) return null;
 
   return (
@@ -53,19 +58,21 @@ export const OpportunityModal: React.FC<Props> = ({ opportunity, onClose }) => {
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
-          <Button
-            variant="ghost"
-            className="px-3 py-1.5 text-[11px]"
-            type="button"
-            onClick={onClose}
-          >
-            Close
-          </Button>
-          <Button className="px-4 py-1.5 text-[11px]" type="button">
-            Apply (mock)
-          </Button>
-        </div>
+        {showActions && (
+          <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
+            <Button
+              variant="ghost"
+              className="px-3 py-1.5 text-[11px]"
+              type="button"
+              onClick={onClose}
+            >
+              Close
+            </Button>
+            <Button className="px-4 py-1.5 text-[11px]" type="button">
+              Apply (mock)
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
