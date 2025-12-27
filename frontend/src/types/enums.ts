@@ -150,3 +150,22 @@ export enum AvailabilityType {
   PartTime = 2,
   WeekendsOnly = 3,
 }
+
+export enum AttendanceType {
+  Remote = 0,
+  Onsite = 1,
+  Hybrid = 2,
+}
+
+export enum InternshipDuration {
+  OneMonth = 0,
+  TwoMonths = 1,
+  ThreeMonths = 2,
+  MoreThanThree = 3,
+}
+
+export enum ReviewMethod {
+  FileOnly = 0,
+  Interview = 1,
+  SimpleTest = 2,
+}

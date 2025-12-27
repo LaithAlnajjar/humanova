@@ -93,6 +93,11 @@ const CompanyNav = () => (
       end
     />
     <NavItem
+      to="/dashboard/company/internships"
+      icon={<List size={18} />}
+      label="My Internships"
+    />
+    <NavItem
       to="/dashboard/company/post"
       icon={<Briefcase size={18} />}
       label="Post Internship"

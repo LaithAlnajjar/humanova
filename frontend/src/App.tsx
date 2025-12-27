@@ -50,6 +50,7 @@ import PODRatingPage from "./pages/POD/PODRatingPage";
 import { UniversityDashboardPage } from "@/pages/University/UniversityDashboardPage";
 import { StudentsPage } from "@/pages/University/StudentsPage";
 import { ApprovalsPage } from "@/pages/University/ApprovalsPage";
+import MyInternshipsPage from "./pages/Company/MyInternshipsPage";
 
 export const App: React.FC = () => {
   const { t } = useTranslation();
@@ -139,6 +140,8 @@ export const App: React.FC = () => {
               path="company/applications"
               element={<ApplicationManagerPage />}
             />
+            <Route path="company/internships" element={<MyInternshipsPage />} />{" "}
+            {/* NEW */}
             <Route
               path="company/supervisors"
               element={<SupervisorManagerPage />}
