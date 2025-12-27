@@ -9,59 +9,34 @@ import { UserRole } from "@/types/enums";
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login } = useAuth(); // Use the REAL auth context
 
   const [form, setForm] = useState<LoginPayload>({ email: "", password: "" });
-  const [errors, setErrors] = useState<{
-    email?: string;
-    password?: string;
-    global?: string;
-  }>({});
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    // Clear errors when user types
-    if (errors[e.target.name as keyof typeof errors] || errors.global) {
-      setErrors((prev) => ({
-        ...prev,
-        [e.target.name]: undefined,
-        global: undefined,
-      }));
-    }
-  };
-
-  const validate = () => {
-    const next: typeof errors = {};
-    if (!form.email) next.email = "Email is required";
-    if (!form.password) next.password = "Password is required";
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-
     setIsLoading(true);
+    setError("");
 
     try {
-      // 1. Call Real Backend Login
+      // 1. Perform Real Login
       await login(form);
 
-      // 2. Retrieve the user to check role (stored in localStorage by AuthContext)
-      // Note: We parse it fresh to ensure we have the latest backend response
-      const storedUser = localStorage.getItem("humanova_user");
-      const user = storedUser ? JSON.parse(storedUser) : null;
+      // 2. Check stored user to determine redirection
+      const stored = localStorage.getItem("humanova_user");
+      const user = stored ? JSON.parse(stored) : null;
 
-      if (!user) {
-        throw new Error("Session creation failed");
-      }
+      if (!user) throw new Error("Login failed");
 
-      // 3. Navigate based on Integer Role (Enum)
+      // 3. Redirect to your EXISTING Mock Dashboards based on Enum
       switch (user.role) {
         case UserRole.Student:
           navigate("/dashboard/student");
+          break;
+        case UserRole.Company:
+          navigate("/dashboard/company");
           break;
         case UserRole.Volunteer:
           navigate("/dashboard/volunteer");
@@ -69,25 +44,15 @@ export const LoginPage: React.FC = () => {
         case UserRole.Charity:
           navigate("/dashboard/charity");
           break;
-        case UserRole.Company:
-          navigate("/dashboard/company");
-          break;
         case UserRole.University:
           navigate("/dashboard/university");
           break;
-        case UserRole.DisabledStudent:
-          navigate("/dashboard/disabled-student");
-          break;
         default:
-          navigate("/dashboard"); // Fallback
-          break;
+          navigate("/dashboard");
       }
-    } catch (error: any) {
-      console.error("Login Failed:", error);
-      setErrors((prev) => ({
-        ...prev,
-        global: error.message || "Invalid email or password.",
-      }));
+    } catch (err: any) {
+      console.error(err);
+      setError("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
@@ -99,13 +64,12 @@ export const LoginPage: React.FC = () => {
         className="glass-panel w-full max-w-md rounded-3xl px-6 py-6 sm:px-8 sm:py-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
       >
         <h1 className="mb-1 text-xl font-semibold text-gray-900 dark:text-gray-50">
-          Welcome back to Humanova
+          Welcome back
         </h1>
         <p className="mb-5 text-xs text-gray-600 dark:text-gray-300">
-          Log in to continue exploring opportunities and your dashboard.
+          Log in to continue exploring opportunities.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -115,8 +79,7 @@ export const LoginPage: React.FC = () => {
             label="Email"
             placeholder="you@example.com"
             value={form.email}
-            onChange={handleChange}
-            error={errors.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
           <Input
             name="password"
@@ -124,15 +87,10 @@ export const LoginPage: React.FC = () => {
             label="Password"
             placeholder="••••••••"
             value={form.password}
-            onChange={handleChange}
-            error={errors.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
 
-          {errors.global && (
-            <p className="text-[11px] text-red-500 bg-red-50 dark:bg-red-900/20 p-2 rounded-lg text-center">
-              {errors.global}
-            </p>
-          )}
+          {error && <p className="text-xs text-red-500 text-center">{error}</p>}
 
           <div className="pt-3">
             <Button type="submit" className="w-full" disabled={isLoading}>
@@ -140,17 +98,6 @@ export const LoginPage: React.FC = () => {
             </Button>
           </div>
         </form>
-
-        <p className="mt-4 text-[11px] text-gray-600 dark:text-gray-300">
-          Don&apos;t have an account?{" "}
-          <button
-            type="button"
-            className="font-semibold text-humanova-olive underline-offset-2 hover:underline dark:text-humanova-gold"
-            onClick={() => navigate("/auth/register")}
-          >
-            Create one
-          </button>
-        </p>
       </motion.div>
     </div>
   );

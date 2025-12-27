@@ -5,6 +5,7 @@ import { User, LogOut } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
 import { useLang } from "@/context/LangContext";
 import { useAuth } from "@/context/AuthContext";
+import { UserRole } from "@/types/enums"; // Import Enum
 
 const navLinkBase =
   "text-sm sm:text-base px-3 py-1 rounded-full transition-colors duration-300";
@@ -13,13 +14,37 @@ const navLinkActive =
 const navLinkInactive =
   "text-gray-700 hover:bg-humanova-cream/60 dark:text-gray-200 dark:hover:bg-humanova-oliveDark/70";
 
+// Helper to convert Numeric Role to URL String
+const getDashboardSlug = (role: UserRole): string => {
+  switch (role) {
+    case UserRole.Student:
+      return "student";
+    case UserRole.Company:
+      return "company";
+    case UserRole.Volunteer:
+      return "volunteer";
+    case UserRole.Charity:
+      return "charity";
+    case UserRole.University:
+      return "university";
+    case UserRole.DisabledStudent:
+      return "disabled-student";
+    default:
+      return "student"; // Fallback
+  }
+};
+
 export const Navbar: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { lang, toggleLang } = useLang();
   const { isAuthenticated, user, logout } = useAuth();
 
-  const dashboardPath = user ? `/dashboard/${user.role}` : "/dashboard";
+  // FIX: Convert numeric enum to string path
+  const dashboardPath =
+    user && user.role !== undefined
+      ? `/dashboard/${getDashboardSlug(user.role)}`
+      : "/auth/login";
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/40 bg-gradient-to-b from-white/80 to-white/40 backdrop-blur-md dark:from-black/70 dark:to-black/30">
@@ -57,7 +82,6 @@ export const Navbar: React.FC = () => {
             >
               {t("nav.opportunities")}
             </NavLink>
-
           </div>
 
           {/* Auth section */}

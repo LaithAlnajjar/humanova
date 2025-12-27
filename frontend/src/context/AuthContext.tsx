@@ -15,49 +15,37 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // FIX: Lazy Initialization.
+  // We check localStorage BEFORE the first render happens.
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const storedUser = localStorage.getItem("humanova_user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
 
-  // 1. Check for existing session on startup
-  useEffect(() => {
-    const initializeAuth = () => {
-      const storedUser = localStorage.getItem("humanova_user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-        } catch (error) {
-          console.error("Failed to parse stored user", error);
-          localStorage.removeItem("humanova_user");
-        }
-      }
-      setIsLoading(false);
-    };
+  const [isLoading, setIsLoading] = useState(false); // No longer need true default since we load synchronously above
 
-    initializeAuth();
-  }, []);
-
-  // 2. Login Function
   const login = async (payload: LoginPayload) => {
+    setIsLoading(true);
     try {
       const data = await apiLogin(payload);
 
-      // Save to State
+      // 1. Update State
       setUser(data);
 
-      // Save to LocalStorage (Persist)
+      // 2. Persist to Storage
       localStorage.setItem("humanova_user", JSON.stringify(data));
 
       return Promise.resolve();
     } catch (error) {
       return Promise.reject(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // 3. Logout Function
   const logout = () => {
     setUser(null);
     localStorage.removeItem("humanova_user");
-    // Optional: Redirect to home or login is handled by the UI consuming this
   };
 
   return (
