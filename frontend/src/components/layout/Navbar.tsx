@@ -65,25 +65,6 @@ export const Navbar: React.FC = () => {
 
         {/* Nav links + actions */}
         <div className="flex items-center gap-3 sm:gap-5">
-          <div className="hidden items-center gap-1 sm:flex">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
-              }
-            >
-              {t("nav.home")}
-            </NavLink>
-            <NavLink
-              to="/opportunities"
-              className={({ isActive }) =>
-                `${navLinkBase} ${isActive ? navLinkActive : navLinkInactive}`
-              }
-            >
-              {t("nav.opportunities")}
-            </NavLink>
-          </div>
-
           {/* Auth section */}
           <div className="hidden items-center gap-2 sm:flex">
             {isAuthenticated && user ? (
@@ -107,13 +88,13 @@ export const Navbar: React.FC = () => {
               <>
                 <Link
                   to="/auth/login"
-                  className="text-xs font-medium text-gray-800 hover:text-humanova-olive dark:text-gray-100 dark:hover:text-humanova-gold"
+                  className=" font-medium text-gray-800 hover:text-humanova-olive dark:text-gray-100 dark:hover:text-humanova-gold"
                 >
                   {t("nav.login")}
                 </Link>
                 <Link
                   to="/auth/register"
-                  className="rounded-full bg-humanova-olive px-3 py-1 text-xs font-semibold text-white shadow-sm transition hover:bg-humanova-oliveDark dark:bg-humanova-gold dark:text-black dark:hover:bg-humanova-gold/90"
+                  className="rounded-full bg-humanova-olive px-3 py-1  font-semibold text-white shadow-sm transition hover:bg-humanova-oliveDark dark:bg-humanova-gold dark:text-black dark:hover:bg-humanova-gold/90"
                 >
                   {t("nav.register")}
                 </Link>

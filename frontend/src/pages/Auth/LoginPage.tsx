@@ -9,7 +9,7 @@ import { UserRole } from "@/types/enums";
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Use the REAL auth context
+  const { login } = useAuth();
 
   const [form, setForm] = useState<LoginPayload>({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -30,7 +30,7 @@ export const LoginPage: React.FC = () => {
 
       if (!user) throw new Error("Login failed");
 
-      // 3. Redirect to your EXISTING Mock Dashboards based on Enum
+      // 3. Redirect based on Enum
       switch (user.role) {
         case UserRole.Student:
           navigate("/dashboard/student");
@@ -46,6 +46,9 @@ export const LoginPage: React.FC = () => {
           break;
         case UserRole.University:
           navigate("/dashboard/university");
+          break;
+        case UserRole.DisabledStudent: // ADDED THIS CASE
+          navigate("/dashboard/disabled-student");
           break;
         default:
           navigate("/dashboard");

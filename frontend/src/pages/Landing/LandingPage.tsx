@@ -5,20 +5,15 @@ import { Link } from "react-router-dom";
 
 import { HeroSplineSection } from "@/components/landing/HeroSplineSection";
 import { Button } from "@/components/ui/Button";
-import {
-  fadeInUp,
-  fadeIn,
-  staggerContainer,
-  scaleIn,
-} from "@/hooks/lib/animationVariants";
+import { fadeInUp, staggerContainer } from "@/hooks/lib/animationVariants";
 
 export const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-950 to-black text-slate-50">
-      {/* Hero مع Spline Robot */}
+      {/* Hero with Spline Robot */}
       <HeroSplineSection />
 
-      {/* Feature grid للـ roles */}
+      {/* Feature grid for roles */}
       <section className="max-w-6xl mx-auto px-4 pb-16 md:pb-20">
         <motion.div
           className="space-y-6"
@@ -71,7 +66,7 @@ export const LandingPage: React.FC = () => {
         </motion.div>
       </section>
 
-      {/* CTA ختامية */}
+      {/* Final CTA */}
       <section className="max-w-6xl mx-auto px-4 pb-10 md:pb-12">
         <motion.div
           className="glass-panel rounded-3xl px-4 py-5 md:px-6 md:py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4"
@@ -97,13 +92,6 @@ export const LandingPage: React.FC = () => {
           <div className="flex flex-wrap gap-2">
             <Button asChild className="px-4 py-2 text-xs md:text-sm">
               <Link to="/auth/register">Create your profile</Link>
-            </Button>
-            <Button
-              asChild
-              variant="ghost"
-              className="px-4 py-2 text-xs md:text-sm border border-emerald-400/40 text-emerald-200 hover:bg-emerald-500/10"
-            >
-              <Link to="/support">Explore support flows</Link>
             </Button>
           </div>
         </motion.div>

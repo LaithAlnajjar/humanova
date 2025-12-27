@@ -46,14 +46,6 @@ export const HeroSplineSection: React.FC = () => {
             >
               <Link to="/auth/register">Get started with Humanova</Link>
             </Button>
-
-            <Button
-              asChild
-              variant="ghost"
-              className="px-4 py-2 text-xs md:text-sm border border-emerald-400/40 text-emerald-200 hover:bg-emerald-500/10"
-            >
-              <Link to="/opportunities">Explore opportunities</Link>
-            </Button>
           </motion.div>
 
           {/* AI Badge / Caption */}
