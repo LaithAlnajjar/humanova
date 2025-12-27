@@ -187,3 +187,18 @@ export interface InternshipFilters {
   attendanceType?: string; // string because selects usually handle strings
   isPaid?: string; // 'true' | 'false' | ''
 }
+
+export enum AssistanceDuration {
+  OneTime = 0,
+  Weekly = 1,
+  FullSemester = 2,
+}
+
+export enum AssistanceRequestStatus {
+  Draft = 0,
+  Submitted = 1,
+  Matched = 2,
+  Completed = 3,
+  Cancelled = 4,
+  Rejected = 5,
+}

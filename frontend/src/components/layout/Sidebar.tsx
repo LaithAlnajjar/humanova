@@ -218,6 +218,11 @@ const DisabledStudentNav = () => (
       label="My Profile"
     />
     <NavItem
+      to="/dashboard/disabled-student/requests"
+      icon={<List size={18} />}
+      label="My Requests"
+    />
+    <NavItem
       to="/dashboard/disabled-student/publish-request"
       icon={<PlusSquare size={18} />}
       label="Publish Help Request"

@@ -45,6 +45,7 @@ import { DisabledStudentDashboard } from "@/pages/Dashboard/DisabledStudentDashb
 import PODProfilePage from "./pages/POD/PODProfilePage";
 import PublishHelpRequestPage from "./pages/POD/PublishHelpRequestPage";
 import PODRatingPage from "./pages/POD/PODRatingPage";
+import MyRequestsPage from "./pages/POD/MyRequestsPage";
 
 // University Pages
 import { UniversityDashboardPage } from "@/pages/University/UniversityDashboardPage";
@@ -167,6 +168,10 @@ export const App: React.FC = () => {
             <Route
               path="disabled-student/profile"
               element={<PODProfilePage />}
+            />
+            <Route
+              path="disabled-student/requests"
+              element={<MyRequestsPage />}
             />
             <Route
               path="disabled-student/publish-request"

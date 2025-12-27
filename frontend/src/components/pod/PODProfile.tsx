@@ -1,115 +1,186 @@
-import React, { useState, useEffect } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/Button';
-import { Input } from '@/components/ui/Input';
-import { getPODProfile, updatePODProfile } from '@/services/podService';
-import { PODProfile as PODProfileType } from '@/types/pod';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPODProfile } from "../../services/podService";
+import { Card } from "../ui/Card";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Accessibility,
+  BookOpen,
+  FileText,
+  AlertCircle,
+} from "lucide-react";
+import { DisabilityType, AssistanceType } from "../../types/enums";
 
-const profileSchema = z.object({
-  disabilityType: z.string().min(1, 'Disability type is required'),
-  needs: z.array(z.string()).min(1, 'At least one need is required'),
-  university: z.string().min(1, 'University is required'),
-  major: z.string().min(1, 'Major is required'),
-});
+// Helper to get Enum label
+const getEnumLabel = (enumObj: any, value: number) => {
+  return Object.keys(enumObj)
+    .find((key) => enumObj[key] === value)
+    ?.replace(/([A-Z])/g, " $1")
+    .trim();
+};
 
-export const PODProfile: React.FC = () => {
-  const [profile, setProfile] = useState<PODProfileType | null>(null);
+export const PODProfileView = () => {
+  // Fetch profile data (Mocked)
   const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<PODProfileType>({
-    resolver: zodResolver(profileSchema),
-    defaultValues: {
-      disabilityType: '',
-      needs: [],
-      university: '',
-      major: '',
-    },
+    data: profile,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["pod-profile-view"],
+    queryFn: () => getPODProfile("current-user"),
   });
 
-  useEffect(() => {
-    // Fetch profile data - using a placeholder for user ID
-    getPODProfile('current-user').then((data) => {
-      setProfile(data);
-      reset(data);
-    });
-  }, [reset]);
+  if (isLoading) {
+    return (
+      <div className="space-y-6 animate-pulse max-w-5xl mx-auto">
+        <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl col-span-1" />
+          <div className="h-64 bg-gray-200 dark:bg-gray-800 rounded-2xl col-span-2" />
+        </div>
+      </div>
+    );
+  }
 
-  const onSubmit = async (data: PODProfileType) => {
-    if (profile) {
-      const updatedProfile = await updatePODProfile({ ...profile, ...data });
-      setProfile(updatedProfile);
-      reset(updatedProfile);
-      alert('Profile updated successfully!');
-    }
-  };
-
-  if (!profile) {
-    return <div>Loading profile...</div>;
+  if (error || !profile) {
+    return (
+      <div className="p-8 text-center text-red-500">
+        Failed to load profile.
+      </div>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label htmlFor="disabilityType">Disability Type</label>
-        <Controller
-          name="disabilityType"
-          control={control}
-          render={({ field }) => <Input {...field} id="disabilityType" />}
-        />
-        {errors.disabilityType && <p className="text-red-500">{errors.disabilityType.message}</p>}
-      </div>
-      <div>
-        <label>Needs</label>
-        <div className="flex flex-wrap gap-4">
-          {['Accompaniment', 'Note-taking', 'Transportation', 'Academic Support'].map((need) => (
-            <Controller
-              key={need}
-              name="needs"
-              control={control}
-              render={({ field }) => (
-                <label className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={field.value.includes(need)}
-                    onChange={(e) => {
-                      const newNeeds = e.target.checked
-                        ? [...field.value, need]
-                        : field.value.filter((n) => n !== need);
-                      field.onChange(newNeeds);
-                    }}
-                  />
-                  {need}
-                </label>
-              )}
-            />
-          ))}
+    <div className="space-y-6 max-w-5xl mx-auto">
+      {/* 1. Identity Card (Replaces the broken blue header) */}
+      <Card className="p-8 border-l-4 border-l-primary-500 overflow-hidden relative">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-6 relative z-10">
+          {/* Info */}
+          <div className="text-center md:text-left space-y-1 flex-grow">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              Student Profile
+            </h1>
+            <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800">
+                <BookOpen size={14} /> {profile.major}
+              </span>
+              <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-800">
+                <MapPin size={14} /> ID: {profile.universityId}
+              </span>
+            </div>
+
+            {/* Contact Grid */}
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <Mail size={16} className="text-primary-500" />
+                {profile.email}
+              </div>
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <Phone size={16} className="text-primary-500" />
+                {profile.phoneNumber}
+              </div>
+            </div>
+          </div>
         </div>
-        {errors.needs && <p className="text-red-500">{errors.needs.message}</p>}
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        {/* 2. Needs Column (Critical Info) */}
+        <Card className="md:col-span-1 p-6 h-full flex flex-col bg-red-50/50 dark:bg-red-900/10 border-red-100 dark:border-red-900/30">
+          <div className="flex items-center gap-2 mb-6">
+            <div className="p-2 bg-white dark:bg-gray-800 rounded-lg text-red-500 shadow-sm">
+              <Accessibility size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-red-600 dark:text-red-400 uppercase tracking-wider">
+                Primary Category
+              </p>
+              <p className="font-bold text-gray-900 dark:text-white text-lg">
+                {getEnumLabel(DisabilityType, profile.disabilityType)}
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-4 flex-grow">
+            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">
+              Assistance Required
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {profile.assistanceNeeds.map((needId) => (
+                <span
+                  key={needId}
+                  className="px-3 py-1.5 rounded-lg bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-xs font-bold border border-gray-100 dark:border-gray-700 shadow-sm"
+                >
+                  {getEnumLabel(AssistanceType, needId)}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Card>
+
+        {/* 3. Details Column */}
+        <div className="md:col-span-2 flex flex-col gap-6 h-full">
+          {/* Condition & Notes */}
+          <Card className="p-6 flex-grow">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <FileText size={20} className="text-primary-600" />
+              Condition & Requirements
+            </h3>
+
+            <div className="space-y-4">
+              <div className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                  {profile.conditionSummary}
+                </p>
+              </div>
+
+              {profile.additionalNotes && (
+                <div className="flex gap-3 items-start p-4 rounded-xl bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-100 dark:border-yellow-900/30">
+                  <AlertCircle
+                    size={18}
+                    className="text-yellow-600 dark:text-yellow-500 shrink-0 mt-0.5"
+                  />
+                  <div>
+                    <p className="text-xs font-bold text-yellow-700 dark:text-yellow-500 uppercase mb-1">
+                      Additional Notes
+                    </p>
+                    <p className="text-sm text-gray-700 dark:text-gray-300 italic">
+                      "{profile.additionalNotes}"
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </Card>
+
+          {/* Preferences (Compact) */}
+          <Card className="p-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <span className="text-xs text-gray-400 font-bold uppercase block mb-1">
+                  Preferred Time
+                </span>
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <Clock size={16} className="text-primary-500" />
+                  {profile.preferredTime || "Flexible"}
+                </div>
+              </div>
+              <div>
+                <span className="text-xs text-gray-400 font-bold uppercase block mb-1">
+                  Preferred Place
+                </span>
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                  <MapPin size={16} className="text-primary-500" />
+                  {profile.preferredPlace || "Campus Wide"}
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
-      <div>
-        <label htmlFor="university">University</label>
-        <Controller
-          name="university"
-          control={control}
-          render={({ field }) => <Input {...field} id="university" />}
-        />
-        {errors.university && <p className="text-red-500">{errors.university.message}</p>}
-      </div>
-      <div>
-        <label htmlFor="major">Major</label>
-        <Controller
-          name="major"
-          control={control}
-          render={({ field }) => <Input {...field} id="major" />}
-        />
-        {errors.major && <p className="text-red-500">{errors.major.message}</p>}
-      </div>
-      <Button type="submit">Save Changes</Button>
-    </form>
+    </div>
   );
 };

@@ -1,57 +1,103 @@
-import { PODProfile, VolunteerMatch, Rating, SupportRequest } from '../types/pod';
+import { AssistanceType, DisabilityType } from "@/types/enums";
+import {
+  CreateAssistanceRequest,
+  AssistanceRequestResponse,
+  DisabledProfileInfo,
+  DisabledStudentProfileCreateRequest,
+} from "../types/api/pod";
 
-const API_URL = '/api/pod';
+const API_URL = "http://localhost:5022/api/assistance-requests";
 
-export const getPODProfile = async (id: string): Promise<PODProfile> => {
-  // Replace with actual API call
-  return Promise.resolve({
-    id,
-    disabilityType: 'Visual Impairment',
-    needs: ['Note-taking', 'Transportation'],
-    university: 'Example University',
-    major: 'Computer Science',
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: token ? `Bearer ${token}` : "",
+  };
+};
+
+export const podService = {
+  // 0. Get Profile Info (Pre-fill form)
+  getProfileInfo: async (): Promise<DisabledProfileInfo> => {
+    const response = await fetch(`${API_URL}/profile-info`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch profile info");
+    return response.json();
+  },
+
+  // 1. Create Draft
+  createDraft: async (
+    data: CreateAssistanceRequest
+  ): Promise<{ id: number; status: number }> => {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text || "Failed to create request");
+    }
+    return response.json();
+  },
+
+  // 3. Submit (Draft -> Submitted)
+  submit: async (id: number): Promise<void> => {
+    const response = await fetch(`${API_URL}/${id}/submit`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to submit request");
+  },
+
+  // 5. Get My Requests
+  getMyRequests: async (): Promise<AssistanceRequestResponse[]> => {
+    const response = await fetch(`${API_URL}/mine`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error("Failed to fetch requests");
+    return response.json();
+  },
+};
+
+const MOCK_POD_PROFILE: DisabledStudentProfileCreateRequest = {
+  universityId: 1, // Example ID
+  major: "Computer Science",
+  phoneNumber: "0791234567",
+  email: "student@university.edu.jo",
+  disabilityType: DisabilityType.Mobility,
+  conditionSummary:
+    "Uses a wheelchair for mobility. Requires accessible routes.",
+  preferredTime: "Mornings (9 AM - 12 PM)",
+  preferredPlace: "Building A, Ground Floor",
+  assistanceNeeds: [AssistanceType.Transportation, AssistanceType.CampusEscort],
+  photoUrl: "https://via.placeholder.com/150",
+  additionalNotes: "Please ensure elevators are working.",
+};
+
+export const getPODProfile = async (
+  userId: string
+): Promise<DisabledStudentProfileCreateRequest> => {
+  // Simulate API delay
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(MOCK_POD_PROFILE);
+    }, 500);
   });
 };
 
-export const updatePODProfile = async (profile: PODProfile): Promise<PODProfile> => {
-  // Replace with actual API call
-  return Promise.resolve(profile);
-};
-
-export const getVolunteerMatches = async (id: string): Promise<VolunteerMatch[]> => {
-  // Replace with actual API call
-  return Promise.resolve([
-    { id: '1', name: 'John Doe', location: 'Nearby', skills: ['Note-taking'] },
-    { id: '2', name: 'Jane Smith', location: 'City Center', skills: ['Transportation'] },
-  ]);
-};
-
-export const submitRating = async (rating: Rating): Promise<Rating> => {
-  // Replace with actual API call
-  return Promise.resolve(rating);
-};
-
-export const createSupportRequest = async (supportRequest: Omit<SupportRequest, 'id' | 'podId' | 'status'>): Promise<SupportRequest> => {
-  // Replace with actual API call
-  console.log('Submitting support request:', supportRequest);
-  return Promise.resolve({
-    id: new Date().toISOString(),
-    podId: 'pod1', // Assuming a logged in POD user
-    ...supportRequest,
-    status: 'Open',
+export const updatePODProfile = async (
+  data: DisabledStudentProfileCreateRequest
+): Promise<DisabledStudentProfileCreateRequest> => {
+  // Simulate API update
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("Profile Updated:", data);
+      resolve(data);
+    }, 500);
   });
-};
-
-export const getPodSupportRequests = async (): Promise<SupportRequest[]> => {
-  // Replace with actual API call
-  return Promise.resolve([
-    { id: '1', podId: 'pod1', volunteerId: 'vol1', category: 'Academic Support', description: 'Need help with note taking for biology class.', urgency: 'High', status: 'Closed' },
-    { id: '2', podId: 'pod1', volunteerId: 'vol2', category: 'Transportation', description: 'Need a ride to a doctor appointment.', urgency: 'Medium', status: 'Closed' },
-    { id: '3', podId: 'pod1', category: 'Daily Living', description: 'Grocery shopping assistance.', urgency: 'Low', status: 'Open' },
-  ]);
-};
-
-export const getCompletedHelpRequests = async (): Promise<SupportRequest[]> => {
-    const requests = await getPodSupportRequests();
-    return requests.filter(request => request.status === 'Closed');
 };

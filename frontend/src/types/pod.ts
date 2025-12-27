@@ -1,32 +1,18 @@
+import { DisabilityType, AssistanceType } from "./enums";
 
-export interface PODProfile {
-  id: string;
-  disabilityType: string;
-  needs: string[];
-  university: string;
+export interface DisabledStudentProfileCreateRequest {
+  universityId: number;
   major: string;
+  phoneNumber: string;
+  email: string;
+  disabilityType: DisabilityType;
+  conditionSummary: string;
+  preferredTime?: string;
+  preferredPlace?: string;
+  assistanceNeeds: AssistanceType[];
+  photoUrl?: string;
+  additionalNotes?: string;
 }
 
-export interface VolunteerMatch {
-  id: string;
-  name: string;
-  location: string;
-  skills: string[];
-}
-
-export interface Rating {
-  id:string;
-  volunteerId: string;
-  rating: number;
-  comment: string;
-}
-
-export interface SupportRequest {
-  id: string;
-  podId: string;
-  volunteerId?: string;
-  category: string;
-  description: string;
-  urgency: 'Low' | 'Medium' | 'High';
-  status: 'Open' | 'In Progress' | 'Closed';
-}
+// Re-export as PODProfileType for component compatibility if needed, or update component
+export type PODProfile = DisabledStudentProfileCreateRequest;
