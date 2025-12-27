@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query"; // Import useQueryClient
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
@@ -13,12 +13,13 @@ import {
   TargetGroup,
   AcceptanceMethod,
   VolunteerSkill,
-  AvailabilityType, // Ensure this is imported
+  AvailabilityType,
 } from "../../types/enums";
 
 // --- STYLING CONSTANTS ---
+// Added 'h-11' to enforce fixed height matching the inputs
 const SELECT_CLASSES =
-  "w-full rounded-xl border border-gray-200 bg-white/50 px-4 py-2.5 pr-10 text-sm outline-none transition-all placeholder:text-gray-400 focus:border-humanova-olive focus:ring-2 focus:ring-humanova-olive/20 dark:border-gray-600 dark:bg-black/40 dark:text-white dark:focus:border-humanova-gold dark:focus:ring-humanova-gold/20";
+  "w-full h-11 rounded-xl border border-gray-200 bg-white/50 px-4 pr-10 text-sm outline-none transition-all placeholder:text-gray-400 focus:border-humanova-olive focus:ring-2 focus:ring-humanova-olive/20 dark:border-gray-600 dark:bg-black/40 dark:text-white dark:focus:border-humanova-gold dark:focus:ring-humanova-gold/20";
 
 const OPTION_CLASSES =
   "bg-white text-gray-900 dark:bg-gray-800 dark:text-white";
@@ -34,9 +35,8 @@ const getEnumOptions = (enumObj: any) => {
 };
 
 export const PostOpportunityForm = () => {
-  const queryClient = useQueryClient(); // For refreshing lists if needed
+  const queryClient = useQueryClient();
 
-  // --- State Management ---
   const [formData, setFormData] = useState<
     Partial<CreateOrUpdateOpportunityRequest>
   >({
@@ -70,18 +70,14 @@ export const PostOpportunityForm = () => {
 
   const [skillsInput, setSkillsInput] = useState("");
 
-  // --- Mutation ---
   const mutation = useMutation({
-    // 1. Create Draft
     mutationFn: async (data: CreateOrUpdateOpportunityRequest) => {
       const draft = await opportunityService.createDraft(data);
-      // 2. Immediately Publish
       await opportunityService.publish(draft.id);
       return draft;
     },
     onSuccess: () => {
       alert("Opportunity Published Successfully!");
-      // Invalidate queries to refresh lists (if you have them on this page)
       queryClient.invalidateQueries({ queryKey: ["published-opportunities"] });
     },
     onError: (err: Error) => {
@@ -131,7 +127,8 @@ export const PostOpportunityForm = () => {
 
   return (
     <Card className="p-6 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
+      {/* Updated Title Styling: Removed gradient, set explicit colors */}
+      <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
         Post New Volunteering Opportunity
       </h2>
 
@@ -149,6 +146,7 @@ export const PostOpportunityForm = () => {
               onChange={(e) => handleChange("title", e.target.value)}
               placeholder="e.g., Beach Cleanup 2025"
               required
+              className="h-11" // Enforce height match
             />
 
             <div className="space-y-1">
@@ -182,13 +180,13 @@ export const PostOpportunityForm = () => {
             <textarea
               value={formData.description}
               onChange={(e) => handleChange("description", e.target.value)}
-              className={`${SELECT_CLASSES} min-h-[100px]`}
+              className={`${SELECT_CLASSES} min-h-[100px] h-auto py-3`} // Override height for textarea
               rows={4}
               required
             />
           </div>
 
-          {/* New Skill Selector */}
+          {/* Skill Selector */}
           <div className="space-y-1">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-100">
               Required Skills
@@ -233,6 +231,7 @@ export const PostOpportunityForm = () => {
               value={formData.startDateUtc}
               onChange={(e) => handleChange("startDateUtc", e.target.value)}
               required
+              className="h-11"
             />
             <Input
               label="Apply Deadline"
@@ -240,6 +239,7 @@ export const PostOpportunityForm = () => {
               value={formData.applyDeadlineUtc}
               onChange={(e) => handleChange("applyDeadlineUtc", e.target.value)}
               required
+              className="h-11"
             />
             <Input
               label="Expected Hours"
@@ -249,6 +249,7 @@ export const PostOpportunityForm = () => {
                 handleChange("expectedHours", Number(e.target.value))
               }
               required
+              className="h-11"
             />
           </div>
 
@@ -260,6 +261,7 @@ export const PostOpportunityForm = () => {
                 handleChange("governorateOrCity", e.target.value)
               }
               required
+              className="h-11"
             />
 
             <div className="space-y-1">
@@ -319,6 +321,7 @@ export const PostOpportunityForm = () => {
               }
               min="1"
               required
+              className="h-11"
             />
           </div>
         </div>
@@ -334,12 +337,14 @@ export const PostOpportunityForm = () => {
               value={formData.contactName}
               onChange={(e) => handleChange("contactName", e.target.value)}
               required
+              className="h-11"
             />
             <Input
               label="Contact Phone"
               value={formData.contactPhone}
               onChange={(e) => handleChange("contactPhone", e.target.value)}
               required
+              className="h-11"
             />
             <Input
               label="Contact Email"
@@ -347,6 +352,7 @@ export const PostOpportunityForm = () => {
               value={formData.contactEmail}
               onChange={(e) => handleChange("contactEmail", e.target.value)}
               required
+              className="h-11"
             />
           </div>
         </div>

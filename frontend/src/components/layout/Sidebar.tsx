@@ -16,12 +16,13 @@ import {
   Volume2,
   Star,
   HeartHandshake,
+  List, // Import List icon
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { UserRole } from "@/types/enums"; // Changed to enums to handle numeric values
+import { UserRole } from "@/types/enums";
 
 interface SidebarProps {
-  role: UserRole; // Role is now a number (Enum)
+  role: UserRole;
 }
 
 const baseLink =
@@ -50,7 +51,7 @@ const NavItem: React.FC<{
   </NavLink>
 );
 
-// --- Navigation Groups (Kept exactly as you had them) ---
+// --- Navigation Groups ---
 
 const StudentNav = () => (
   <>
@@ -169,6 +170,12 @@ const CharityNav = () => (
       label="Overview"
       end
     />
+    {/* NEW ITEM ADDED HERE */}
+    <NavItem
+      to="/dashboard/charity/my-opportunities"
+      icon={<List size={18} />}
+      label="My Opportunities"
+    />
     <NavItem
       to="/dashboard/charity/post-opportunity"
       icon={<Briefcase size={18} />}
@@ -225,7 +232,7 @@ const DefaultNav: React.FC = () => (
   </>
 );
 
-// --- Helper to convert Enum ID to Readable String (Fixes the .replace error) ---
+// --- Helper to convert Enum ID to Readable String ---
 const getRoleLabel = (role: UserRole): string => {
   switch (role) {
     case UserRole.Student:
@@ -248,7 +255,6 @@ const getRoleLabel = (role: UserRole): string => {
 export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
   const { logout, user } = useAuth();
 
-  // Updated Switch to check against Enum Numbers
   const renderNav = () => {
     switch (role) {
       case UserRole.Student:
@@ -276,7 +282,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ role }) => {
           {user?.name || "User"}
         </p>
         <p className="text-xs capitalize text-gray-500 dark:text-gray-400">
-          {/* FIX: Use helper function instead of .replace() */}
           {getRoleLabel(role)}
         </p>
       </div>

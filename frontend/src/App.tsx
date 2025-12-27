@@ -38,6 +38,7 @@ import CharityApplicationManagerPage from "./pages/Charity/ApplicationManagerPag
 import PostInitiativePage from "./pages/Charity/PostInitiativePage";
 import CampaignManagerPage from "./pages/Charity/CampaignManagerPage";
 import CertificateSystemPage from "./pages/Charity/CertificateSystemPage";
+import MyOpportunitiesPage from "./components/charity/MyOpportunities";
 
 // Disabled Student Pages
 import { DisabledStudentDashboard } from "@/pages/Dashboard/DisabledStudentDashboard";
@@ -110,6 +111,10 @@ export const App: React.FC = () => {
             <Route
               path="charity/post-opportunity"
               element={<PostOpportunityPage />}
+            />
+            <Route
+              path="charity/my-opportunities"
+              element={<MyOpportunitiesPage />}
             />
             <Route
               path="charity/applications"
