@@ -1,12 +1,12 @@
 import {
   AcceptanceMethod,
-  AvailabilityType,
   OpportunityStatus,
   TargetGroup,
   VolunteerActivityType,
   VolunteerDaysType,
   VolunteeringPlaceType,
   VolunteeringType,
+  VolunteerSkill, // Import this
 } from "../enums";
 
 export interface CreateOrUpdateOpportunityRequest {
@@ -17,8 +17,8 @@ export interface CreateOrUpdateOpportunityRequest {
   volunteeringType: VolunteeringType;
   expectedHours: number;
   daysType: VolunteerDaysType;
-  startDateUtc: string; // ISO Date String
-  endDateUtc?: string | null; // ISO Date String
+  startDateUtc: string;
+  endDateUtc?: string | null;
   country: string;
   governorateOrCity: string;
   placeType: VolunteeringPlaceType;
@@ -27,7 +27,7 @@ export interface CreateOrUpdateOpportunityRequest {
   suitableForDisabled: boolean;
   supportAvailable?: string;
   minimumAge?: number;
-  timeCommitmentRequired: AvailabilityType; // Mapped from AvailabilityType enum
+  timeCommitmentRequired: boolean;
   requireDocuments?: string;
   contactName: string;
   contactPhone: string;
@@ -36,10 +36,10 @@ export interface CreateOrUpdateOpportunityRequest {
   provideVerifiedHours: boolean;
   provideFieldExperience: boolean;
   provideBadge: boolean;
-  applyDeadlineUtc: string; // ISO Date String
+  applyDeadlineUtc: string;
   acceptanceMethod: AcceptanceMethod;
   autoCloseWhenFull: boolean;
-  skills: string[]; // Sending skills as strings (names)
+  skills: VolunteerSkill[]; // FIXED: Now strictly typed as Enum array
 }
 
 export interface OpportunityResponse {
@@ -57,7 +57,7 @@ export interface OpportunityResponse {
   applyDeadlineUtc: string;
   startDateUtc: string;
   publishedUtc?: string;
-  skills?: { id: number; skill: string }[];
+  skills?: { id: number; skill: VolunteerSkill }[];
   contactName: string;
   contactEmail: string;
 }

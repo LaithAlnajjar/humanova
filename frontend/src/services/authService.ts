@@ -7,7 +7,7 @@ import {
 } from "@/types/auth";
 import { UserProfilePayload } from "@/types/registration";
 
-// 1. Point to the API Root (not just /auth) so we can hit /profile too
+// 1. Point to the API Root
 const API_ROOT = "http://localhost:5022/api";
 
 export interface ComplexRegisterPayload extends RegisterBasePayload {
@@ -56,8 +56,12 @@ export const login = async (payload: LoginPayload): Promise<AuthUser> => {
 
   const data = await handleResponse<any>(response);
 
+  // CRITICAL FIX: Save token so opportunityService can use it
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+  }
+
   return {
-    // 2. SAFETY FIX: Check all possible casings for the ID
     id: (data.userId || data.id || data.UserId || 0).toString(),
     name: data.fullName,
     email: data.email,
@@ -84,8 +88,12 @@ export const register = async (
   const baseData = await handleResponse<any>(baseResponse);
   const token = baseData.token;
 
+  // CRITICAL FIX: Save token immediately
+  if (token) {
+    localStorage.setItem("token", token);
+  }
+
   // --- STEP 2: Create Specific Profile ---
-  // We use the token from Step 1 to authorize this request
   if (payload.profile) {
     const roleSlug = getRoleSlug(payload.role);
 
@@ -93,19 +101,17 @@ export const register = async (
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Use the new token!
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(payload.profile),
     });
 
     if (!profileResponse.ok) {
       console.error("User created, but profile failed.");
-      // Optional: Throw error or allow partial registration
     }
   }
 
   return {
-    // SAFETY FIX REPEATED HERE
     id: (baseData.userId || baseData.id || baseData.UserId || 0).toString(),
     name: baseData.fullName,
     email: baseData.email,
@@ -114,7 +120,7 @@ export const register = async (
   };
 };
 
-// Legacy Adapters
+// Legacy Adapters (Keep for compatibility if needed)
 export const mockLogin = login;
 export const mockRegister = (payload: any) =>
   register(payload as ComplexRegisterPayload);

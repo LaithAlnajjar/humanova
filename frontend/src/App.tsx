@@ -10,13 +10,11 @@ import { UserRole } from "@/types/enums"; // 🛡️ Import Enums for role check
 import { LandingPage } from "@/pages/Landing/LandingPage";
 import { LoginPage } from "@/pages/Auth/LoginPage";
 import { RegisterPage } from "@/pages/Auth/RegisterPage";
-import { OpportunitiesPage } from "@/pages/Opportunities/OpportunitiesPage";
 import { ProfilePage } from "@/pages/Profile/ProfilePage";
 
 // Student Pages
 import { StudentDashboard } from "@/pages/Dashboard/StudentDashboard";
 import { TrackingPage } from "@/pages/Student/TrackingPage";
-import { StudentOpportunitiesPage } from "@/pages/Student/StudentOpportunitiesPage";
 import StudentProfilePage from "@/pages/Student/StudentProfilePage";
 import { HelpRequestsPage } from "./pages/Student/HelpRequestsPage";
 
@@ -63,7 +61,6 @@ export const App: React.FC = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
-          <Route path="/opportunities" element={<OpportunitiesPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
@@ -76,10 +73,7 @@ export const App: React.FC = () => {
           <Route element={<ProtectedRoute allowedRoles={[UserRole.Student]} />}>
             <Route path="student" element={<StudentDashboard />} />
             <Route path="student/tracking" element={<TrackingPage />} />
-            <Route
-              path="student/opportunities"
-              element={<StudentOpportunitiesPage />}
-            />
+            <Route path="student/opportunities" />
             <Route path="student/profile" element={<StudentProfilePage />} />
             <Route
               path="student/help-requests"

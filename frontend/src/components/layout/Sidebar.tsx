@@ -180,11 +180,6 @@ const CharityNav = () => (
       label="Application Management"
     />
     <NavItem
-      to="/dashboard/charity/post-initiative"
-      icon={<PlusSquare size={18} />}
-      label="Post Initiatives"
-    />
-    <NavItem
       to="/dashboard/charity/campaigns"
       icon={<Volume2 size={18} />}
       label="Campaign Management"

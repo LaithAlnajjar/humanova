@@ -1,73 +1,123 @@
-import { Opportunity } from '@/types/opportunity';
+import {
+  CreateOrUpdateOpportunityRequest,
+  OpportunityResponse,
+} from "../types/api/opportunities";
+import { VolunteerActivityType, VolunteeringPlaceType } from "../types/enums";
 
-const MOCK_OPPORTUNITIES: Opportunity[] = [
-  {
-    id: '1',
-    title: 'On-campus accessibility buddy',
-    organization: 'Humanova x Hashemite University',
-    type: 'support',
-    location: 'Zarqa · On campus',
-    skills: ['Communication', 'Patience'],
-    timeCommitment: '2h / week',
-    description:
-      'Support a fellow student with mobility or vision challenges in getting to classes and labs.',
-    isRemote: false
-  },
-  {
-    id: '2',
-    title: 'STEM mentoring for school students',
-    organization: 'Future Coders NGO',
-    type: 'volunteering',
-    location: 'Amman · Hybrid',
-    skills: ['Java', 'Teaching', 'Problem solving'],
-    timeCommitment: '4h / week',
-    description:
-      'Lead a small group of school students through basic programming and problem-solving sessions.',
-    isRemote: true
-  },
-  {
-    id: '3',
-    title: 'Backend internship — Java / Spring Boot',
-    organization: 'Globitel',
-    type: 'internship',
-    location: 'Amman Business Park · On site',
-    skills: ['Java', 'Spring Boot', 'REST APIs'],
-    timeCommitment: 'Full-time · 3 months',
-    description:
-      'Join the engineering team to build and maintain APIs with Java and Spring Boot in a real product.',
-    isRemote: false,
-    major: 'SE',
-    internshipType: 'On-site',
-  },
-    {
-    id: '4',
-    title: 'Frontend Internship (React)',
-    organization: 'Amazon',
-    type: 'internship',
-    location: 'Remote',
-    skills: ['React', 'TypeScript', 'HTML/CSS'],
-    timeCommitment: 'Full-time · 6 months',
-    description: 'Work on a customer-facing product using modern React and TypeScript.',
-    isRemote: true,
-    major: 'CS',
-    internshipType: 'Remote',
-  },
-  {
-    id: '5',
-    title: 'Data Science Internship',
-    organization: 'Microsoft',
-    type: 'internship',
-    location: 'Amman · Hybrid',
-    skills: ['Python', 'Pandas', 'SQL'],
-    timeCommitment: 'Part-time · 4 months',
-    description: 'Analyze user data to derive insights and inform product decisions.',
-    isRemote: false,
-    major: 'AI',
-    internshipType: 'Hybrid',
-  },
-];
+const API_URL = "http://localhost:5022/api/volunteering-opportunities";
 
-export const fetchOpportunities = async (): Promise<Opportunity[]> => {
-  await new Promise((r) => setTimeout(r, 500));
-  return MOCK_OPPORTUNITIES;
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: token ? `Bearer ${token}` : "",
+  };
+};
+
+export const opportunityService = {
+  // A) Charity: Create Draft
+  createDraft: async (
+    data: CreateOrUpdateOpportunityRequest
+  ): Promise<{ id: number; status: number }> => {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Failed to create opportunity");
+    }
+
+    return response.json();
+  },
+
+  // B) Charity: Update Draft
+  updateDraft: async (
+    id: number,
+    data: CreateOrUpdateOpportunityRequest
+  ): Promise<void> => {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error("Failed to update opportunity");
+  },
+
+  // C) Charity: Publish
+  publish: async (id: number): Promise<void> => {
+    const response = await fetch(`${API_URL}/${id}/publish`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) throw new Error("Failed to publish opportunity");
+  },
+
+  // E) Charity: Mine (List own drafts/published)
+  getMyOpportunities: async (): Promise<OpportunityResponse[]> => {
+    const response = await fetch(`${API_URL}/mine`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch my opportunities");
+    return response.json();
+  },
+
+  // F) Public/Volunteer: List Published
+  getAllPublished: async (filters?: {
+    activityType?: VolunteerActivityType;
+    placeType?: VolunteeringPlaceType;
+    city?: string;
+    suitableForDisabled?: boolean;
+  }): Promise<OpportunityResponse[]> => {
+    const params = new URLSearchParams();
+    if (filters?.activityType !== undefined)
+      params.append("activityType", filters.activityType.toString());
+    if (filters?.placeType !== undefined)
+      params.append("placeType", filters.placeType.toString());
+    if (filters?.city) params.append("city", filters.city);
+    if (filters?.suitableForDisabled !== undefined)
+      params.append(
+        "suitableForDisabled",
+        filters.suitableForDisabled.toString()
+      );
+
+    const response = await fetch(`${API_URL}?${params.toString()}`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok)
+      throw new Error("Failed to fetch published opportunities");
+    return response.json();
+  },
+
+  // G) Get Details
+  getDetails: async (id: number): Promise<OpportunityResponse> => {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "GET",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch opportunity details");
+    return response.json();
+  },
+
+  // H) Apply
+  apply: async (id: number): Promise<void> => {
+    const response = await fetch(`${API_URL}/${id}/apply`, {
+      method: "POST",
+      headers: getAuthHeaders(),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(errorText || "Failed to apply");
+    }
+  },
 };
