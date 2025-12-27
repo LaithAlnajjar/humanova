@@ -1,74 +1,153 @@
-import React, { useState } from 'react';
-import { VolunteerOpportunity } from '@/types/volunteer';
-import { Button } from '@/components/ui/Button';
-import { Heart } from 'lucide-react';
-import clsx from 'clsx';
+import React from "react";
+import { motion } from "framer-motion";
+import { MapPin, Clock, Users, Calendar } from "lucide-react";
+import { Button } from "../ui/Button";
+import { Card } from "../ui/Card";
+import { useAuth } from "../../context/AuthContext";
+import { UserRole } from "../../types/enums";
+import { useMutation } from "@tanstack/react-query";
+import { opportunityService } from "../../services/opportunityService";
 
-interface Props {
-  opportunity: VolunteerOpportunity;
-  onDetailsClick: () => void;
+interface OpportunityCardProps {
+  opportunity: {
+    id: string | number;
+    title: string;
+    organization: string;
+    location: string;
+    description: string;
+    image?: string;
+    timeCommitment?: string;
+    volunteersNeeded?: number;
+    deadline?: string;
+  };
+  onClick?: () => void;
 }
 
-const categoryLabel: Record<VolunteerOpportunity['category'], string> = {
-  Educational: 'Educational',
-  Health: 'Health',
-  Logistical: 'Logistical',
-  Events: 'Events',
-};
+export const OpportunityCard: React.FC<OpportunityCardProps> = ({
+  opportunity,
+  onClick,
+}) => {
+  const { user } = useAuth();
+  const isVolunteer = user?.role === UserRole.Volunteer;
 
-export const OpportunityCard: React.FC<Props> = ({ opportunity, onDetailsClick }) => {
-  const [isFollowing, setIsFollowing] = useState(false);
+  const mutation = useMutation({
+    mutationFn: () => opportunityService.apply(Number(opportunity.id)),
+    onSuccess: () => {
+      alert("Application successful! The charity will review your profile.");
+    },
+    onError: (err: Error) => {
+      alert(`Application failed: ${err.message}`);
+    },
+  });
 
-  const handleFollow = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsFollowing(!isFollowing);
-    alert(`${isFollowing ? 'Unfollowing' : 'Following'} ${opportunity.entity}`);
+  // Handle Quick Apply button click
+  const handleApply = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Stop click from opening details modal
+    if (!isVolunteer) {
+      alert("Only registered Volunteers can apply for opportunities.");
+      return;
+    }
+    if (confirm(`Apply for "${opportunity.title}"?`)) {
+      mutation.mutate();
+    }
   };
 
-  const handleApply = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    alert(`Applying for: ${opportunity.title}`);
+  // Handle Card or 'View Details' click
+  const handleCardClick = () => {
+    console.log("Card clicked:", opportunity.id); // Debug log
+    if (onClick) onClick();
   };
 
   return (
-    <div className="glass-panel flex h-full flex-col rounded-2xl p-4 text-left text-xs text-gray-800 transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl dark:text-gray-100">
-      <div className="mb-2 flex items-start justify-between gap-2">
-        <div>
-          <span className="rounded-full bg-humanova-olive/10 px-2 py-0.5 text-[10px] font-semibold text-humanova-olive dark:bg-humanova-gold/15 dark:text-humanova-gold">
-            {categoryLabel[opportunity.category]}
-          </span>
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+      className="h-full cursor-pointer group"
+      onClick={handleCardClick} // Make whole wrapper clickable
+    >
+      <Card className="h-full flex flex-col overflow-hidden hover:shadow-lg transition-all border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 backdrop-blur-sm">
+        {/* Image Section */}
+        <div className="relative h-48 overflow-hidden shrink-0">
+          <img
+            src={
+              opportunity.image ||
+              "https://images.unsplash.com/photo-1559027615-cd4628902d4a?auto=format&fit=crop&q=80&w=800"
+            }
+            alt={opportunity.title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+          {/* Quick Apply Overlay */}
+          <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+            <Button
+              size="sm"
+              className="w-full bg-white text-black hover:bg-gray-100 border-none font-semibold shadow-lg"
+              onClick={handleApply}
+              disabled={mutation.isPending}
+            >
+              {mutation.isPending ? "Applying..." : "Quick Apply"}
+            </Button>
+          </div>
         </div>
-        <Button
-          variant="ghost"
-          onClick={handleFollow}
-          className="text-gray-400 hover:text-red-500"
-          title={isFollowing ? `Unfollow ${opportunity.entity}` : `Follow ${opportunity.entity}`}
-        >
-          <Heart size={18} className={clsx(isFollowing && 'fill-current text-red-500')} />
-        </Button>
-      </div>
 
-      <div className="flex-grow">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-50">
-          {opportunity.title}
-        </h3>
-        <p className="mt-1 text-[11px] text-gray-600 dark:text-gray-300">{opportunity.entity}</p>
-        <p className="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
-          {opportunity.location} · {opportunity.duration}
-        </p>
-        <p className="mt-2 text-[11px] text-gray-500 dark:text-gray-400">
-          {opportunity.hours} hours
-        </p>
-      </div>
+        {/* Content Section */}
+        <div className="p-5 flex flex-col flex-grow">
+          <div className="mb-3">
+            <h3
+              className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 mb-1 group-hover:text-primary-600 transition-colors"
+              title={opportunity.title}
+            >
+              {opportunity.title}
+            </h3>
+            <p className="text-sm text-primary-600 dark:text-primary-400 font-medium truncate">
+              {opportunity.organization}
+            </p>
+          </div>
 
-      <div className="mt-4 flex items-center gap-2">
-        <Button onClick={handleApply} className="flex-1 justify-center">
-          Apply
-        </Button>
-        <Button onClick={onDetailsClick} variant="outline" className="w-20 justify-center">
-          Details
-        </Button>
-      </div>
-    </div>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4 line-clamp-2 flex-grow">
+            {opportunity.description}
+          </p>
+
+          {/* Metadata Badges */}
+          <div className="space-y-2 mb-5">
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <MapPin className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
+              <span className="truncate">{opportunity.location}</span>
+            </div>
+            <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+              <Clock className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
+              <span>{opportunity.timeCommitment || "Flexible"}</span>
+            </div>
+            {opportunity.volunteersNeeded && (
+              <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                <Users className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
+                <span>{opportunity.volunteersNeeded} Volunteers needed</span>
+              </div>
+            )}
+            {opportunity.deadline && (
+              <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                <Calendar className="w-3.5 h-3.5 mr-2 text-gray-400 shrink-0" />
+                <span>
+                  Apply by {new Date(opportunity.deadline).toLocaleDateString()}
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* View Details Button (Visual Cue Only, click handled by parent) */}
+          <Button
+            variant="outline"
+            className="w-full mt-auto border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800"
+            onClick={(e) => {
+              e.stopPropagation(); // Avoid double-trigger
+              handleCardClick();
+            }}
+          >
+            View Details
+          </Button>
+        </div>
+      </Card>
+    </motion.div>
   );
 };
