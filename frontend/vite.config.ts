@@ -7,7 +7,6 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// لأننا شغالين ESM، هيك نجيب __dirname بطريقة صح
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -15,8 +14,17 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      // alias @ → على فولدر src
       '@': path.resolve(__dirname, 'src')
+    }
+  },
+  server: {
+    // Proxy API requests to the ASP.NET Core Backend
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5022', // Updated to match launchSettings.json
+        changeOrigin: true,
+        secure: false,
+      }
     }
   },
   test: {
