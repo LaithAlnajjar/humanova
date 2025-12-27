@@ -6,18 +6,12 @@ export enum UserRole {
   Charity = 3,
   Company = 4,
   University = 5,
-  DisabledStudent = 6
+  DisabledStudent = 6,
 }
 
 export enum Gender {
   Male = 1,
-  Female = 2
-}
-
-export enum AvailabilityType {
-  FullTime = 1,
-  PartTime = 2,
-  WeekendsOnly = 3
+  Female = 2,
 }
 
 export enum StudyLevel {
@@ -27,7 +21,7 @@ export enum StudyLevel {
   Year4 = 4,
   Year5 = 5,
   Year6 = 6,
-  Year7 = 7
+  Year7 = 7,
 }
 
 export enum DisabilityType {
@@ -37,14 +31,14 @@ export enum DisabilityType {
   Learning = 4,
   Speech = 5,
   Other = 6,
-  Physical = 7
+  Physical = 7,
 }
 
 export enum AssociationField {
   Educational = 1,
   Health = 2,
   Social = 3,
-  Relief = 4
+  Relief = 4,
 }
 
 export enum StudentSkill {
@@ -59,19 +53,7 @@ export enum StudentSkill {
   UIUX = 104,
   TechnicalSupport = 105,
   Databases = 106,
-  CSharp = 107
-}
-
-export enum VolunteerSkill {
-  Communication = 1,
-  SocialWork = 2,
-  Logistics = 3,
-  TechnicalSupport = 4,
-  EventManagement = 5,
-  Teaching = 6,
-  FieldWork = 7,
-  Administration = 8,
-  Teamwork = 9
+  CSharp = 107,
 }
 
 export enum AssistanceType {
@@ -81,7 +63,7 @@ export enum AssistanceType {
   AcademicSupport = 4,
   CampusEscort = 5,
   TechnicalSupport = 6,
-  ExamAssistance = 7
+  ExamAssistance = 7,
 }
 
 export enum University {
@@ -105,5 +87,66 @@ export enum University {
   AlZaytoonahUniversityOfJordan = 106,
   MiddleEastUniversity = 107,
   JadaraUniversity = 108,
-  AmmanArabUniversity = 109
+  AmmanArabUniversity = 109,
+}
+
+export enum VolunteerActivityType {
+  Educational = 0,
+  Health = 1,
+  Social = 2,
+  Relief = 3,
+  Logistics = 4,
+  Events = 5,
+}
+
+export enum VolunteerDaysType {
+  FixedDays = 0,
+  Flexible = 1,
+}
+
+export enum VolunteeringPlaceType {
+  AssociationHQ = 0,
+  Field = 1,
+  Remote = 2,
+}
+
+export enum VolunteeringType {
+  OneDay = 0,
+  MultipleDays = 1,
+  Ongoing = 2,
+}
+
+export enum VolunteerSkill {
+  Communication = 1,
+  SocialWork = 2,
+  Logistics = 3,
+  TechnicalSupport = 4,
+  EventManagement = 5,
+  Teaching = 6,
+  FieldWork = 7,
+  Administration = 8,
+  Teamwork = 9,
+}
+
+export enum TargetGroup {
+  Students = 0,
+  Graduates = 1,
+  Anyone = 2,
+}
+
+export enum OpportunityStatus {
+  Draft = 0,
+  Published = 1,
+  Closed = 2,
+}
+
+export enum AcceptanceMethod {
+  Instant = 0,
+  Review = 1,
+}
+
+export enum AvailabilityType {
+  FullTime = 1,
+  PartTime = 2,
+  WeekendsOnly = 3,
 }
